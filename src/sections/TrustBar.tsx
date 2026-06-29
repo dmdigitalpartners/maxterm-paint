@@ -94,7 +94,7 @@ function StatCell({
       <p className="font-display font-bold text-3xl lg:text-4xl text-textPrimary leading-none tabular-nums">
         {formatted}
         {numericValue !== null && suffix ? (
-          <span className="text-accent">{suffix}</span>
+          <span className="text-textPrimary">{suffix}</span>
         ) : null}
       </p>
       <p className="text-xs font-semibold uppercase tracking-widest text-muted">{label}</p>
@@ -126,7 +126,7 @@ export function TrustBar() {
     <section
       ref={ref}
       aria-labelledby="trust-bar-heading"
-      className="bg-white border-t-[3px] border-accent"
+      className="bg-surface border-t-[3px] border-accent"
     >
       <h2 id="trust-bar-heading" className="sr-only">
         Факти за Макстерм

@@ -1,11 +1,14 @@
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 // Source: business-intelligence-report.md + homepage-blueprint.md
 export const HERO = {
-  headline: 'Всичко за Вашия Ремонт — на едно място в Пловдив',
+  headlineLine1: 'Всичко за Вашия Ремонт',
+  headlineLine2: 'На едно място в Пловдив',
   subheadline:
     'Официален представител на Benjamin Moore, PPG, Baumit, Mapei и над 20 водещи марки. Два обекта в Пловдив с наш транспорт.',
   ctaContactLabel: 'Свържете се с нас',
   ctaContactHref: '#kontakti',
+  ctaCatalogLabel: 'Разгледайте нашия каталог',
+  ctaCatalogHref: '#produkti',
   imageAlt: 'Интериор на магазин Макстерм с бои Benjamin Moore и ламинирани подове',
 } as const
 
