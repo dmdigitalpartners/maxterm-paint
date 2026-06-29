@@ -1,3 +1,4 @@
+import React from 'react'
 import { Clock, Award, Truck, Users } from 'lucide-react'
 import { WHY_US } from '@/lib/content'
 
@@ -16,16 +17,14 @@ function FeatureCell({
   const Icon = ICON_MAP[icon as IconName] ?? Clock
 
   return (
-    <div
-      className="flex flex-col items-center text-center gap-3 px-4 pt-2 pb-4 lg:pb-6"
-    >
-      <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-        <Icon size={28} className="text-accent" aria-hidden="true" />
+    <div className="flex flex-col items-center text-center gap-4 px-6 py-8 lg:py-10">
+      <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+        <Icon size={30} className="text-accent" aria-hidden="true" />
       </div>
       <h3 className="font-display font-bold text-lg lg:text-xl text-white leading-snug">
         {title}
       </h3>
-      <p className="text-white/80 text-sm lg:text-base leading-relaxed max-w-[240px]">
+      <p className="text-white/75 text-sm lg:text-base leading-relaxed max-w-[240px]">
         {description}
       </p>
     </div>
@@ -36,12 +35,12 @@ export function WhyUs() {
   return (
     <section
       aria-labelledby="why-us-heading"
-      className="bg-primary py-10 lg:py-14"
+      className="bg-primary py-16 lg:py-24"
     >
       <div className="max-w-content mx-auto px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center mb-4 lg:mb-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
+        <div className="text-center mb-10 lg:mb-14">
+          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
             Нашите предимства
           </p>
           <h2
@@ -50,18 +49,25 @@ export function WhyUs() {
           >
             {WHY_US.sectionTitle}
           </h2>
-          <p className="text-white/70 text-base lg:text-lg mt-3 max-w-xl mx-auto">
+          <p className="text-white/65 text-base lg:text-lg mt-4 max-w-xl mx-auto">
             {WHY_US.sectionSubtitle}
           </p>
         </div>
 
-        {/* Feature grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-y-0 lg:divide-x divide-white/10">
-          {WHY_US.items.map((item) => (
-            <FeatureCell
-              key={item.title}
-              {...item}
-            />
+        {/* Feature grid with elegant separators */}
+        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]">
+          {WHY_US.items.map((item, i) => (
+            <React.Fragment key={item.title}>
+              <FeatureCell {...item} />
+              {i < WHY_US.items.length - 1 && (
+                <div
+                  className="hidden lg:flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  <div className="w-px bg-white/15 self-stretch my-10" />
+                </div>
+              )}
+            </React.Fragment>
           ))}
         </div>
       </div>

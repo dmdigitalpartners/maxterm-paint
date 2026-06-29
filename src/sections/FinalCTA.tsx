@@ -5,6 +5,7 @@ import { FINAL_CTA } from '@/lib/content'
 export function FinalCTA() {
   return (
     <section
+      id="kontakti"
       aria-labelledby="final-cta-heading"
       className="relative bg-gradient-to-br from-primary via-primary to-secondary py-20 lg:py-28 overflow-hidden"
     >

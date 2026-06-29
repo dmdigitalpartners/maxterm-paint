@@ -15,12 +15,18 @@
   }
 
   body {
-    @apply font-body text-textPrimary leading-relaxed;
+    @apply font-body text-textPrimary;
     background-color: var(--color-surface);
+    line-height: 1.75;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
+    line-height: 1.2;
+  }
+
+  p {
+    line-height: 1.75;
   }
 
   @media (prefers-reduced-motion: reduce) {

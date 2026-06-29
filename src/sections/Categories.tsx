@@ -51,10 +51,10 @@ function CategoryCard({
 
       {/* Card body */}
       <div className="p-5 lg:p-6 flex flex-col gap-3">
-        <h3 className="font-display font-semibold text-lg lg:text-xl text-textPrimary leading-snug">
+        <h3 className="font-display font-bold text-base lg:text-xl text-textPrimary leading-snug">
           {title}
         </h3>
-        <p className="text-sm text-muted leading-relaxed line-clamp-2">{description}</p>
+        <p className="text-sm text-muted leading-relaxed">{description}</p>
         <div className="mt-auto pt-2 flex items-center gap-1 text-sm font-semibold text-primary group-hover:text-accent transition-colors">
           Разгледай
           <ChevronRight size={15} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
@@ -108,7 +108,7 @@ export function Categories() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
           {(CATEGORIES.items as ReadonlyArray<{ title: string; description: string; image: string; alt: string; href: string }>).map((item, i) => (
             <CategoryCard
               key={item.href}

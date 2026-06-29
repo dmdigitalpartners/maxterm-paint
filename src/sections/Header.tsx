@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Phone, Clock, Menu, X } from 'lucide-react'
-import { Button } from '@/components/Button'
+import { Phone, Menu, X } from 'lucide-react'
 import { CONTACT, HEADER } from '@/lib/content'
 
 export function Header() {
@@ -17,7 +16,6 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -25,47 +23,25 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* ── Utility bar (desktop only) ───────────────────────────── */}
-      <div className="hidden lg:block bg-primary">
-        <div className="max-w-content mx-auto px-8 h-10 flex items-center justify-between gap-6">
-          <div className="flex items-center gap-6">
-            <a
-              href={CONTACT.warehouse.phoneHref}
-              className="flex items-center gap-1.5 text-white/90 text-sm hover:text-white transition-colors"
-            >
-              <Phone size={14} aria-hidden="true" />
-              <span>Склад: {CONTACT.warehouse.phone}</span>
-            </a>
-            <a
-              href={CONTACT.store.phoneHref}
-              className="flex items-center gap-1.5 text-white/90 text-sm hover:text-white transition-colors"
-            >
-              <Phone size={14} aria-hidden="true" />
-              <span>Магазин: {CONTACT.store.phone}</span>
-            </a>
-          </div>
-          <div className="flex items-center gap-1.5 text-white/70 text-sm">
-            <Clock size={13} aria-hidden="true" />
-            <span>{HEADER.hoursLabel}</span>
-          </div>
-        </div>
-      </div>
-
       {/* ── Main nav ─────────────────────────────────────────────── */}
       <div
         className={`bg-white transition-shadow duration-300 ${
           scrolled ? 'shadow-[0_2px_12px_rgba(0,0,0,0.10)]' : 'shadow-[0_1px_0_#E2E8F0]'
         }`}
       >
-        <div className="max-w-content mx-auto px-6 lg:px-8 h-16 lg:h-[72px] flex items-center justify-between gap-6">
+        <div className="max-w-content mx-auto px-6 lg:px-8 h-[72px] lg:h-20 flex items-center justify-between gap-8">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm" aria-label="Макстерм — начало">
+          <Link
+            href="/"
+            className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+            aria-label="Макстерм — начало"
+          >
             <Image
               src="/assets/logo.png"
               alt={HEADER.logoAlt}
-              width={140}
-              height={48}
-              className="h-10 lg:h-11 w-auto object-contain"
+              width={160}
+              height={56}
+              className="h-12 lg:h-14 w-auto object-contain"
               priority
             />
           </Link>
@@ -76,17 +52,34 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-3 py-2 text-sm font-medium text-textPrimary hover:text-primary rounded-md transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="px-3.5 py-2 text-sm font-medium text-textPrimary hover:text-primary rounded-md transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
               >
                 {item.label}
               </Link>
             ))}
-            <div className="ml-3">
-              <Button variant="outline" size="sm" href={HEADER.ctaHref}>
-                {HEADER.ctaLabel}
-              </Button>
-            </div>
           </nav>
+
+          {/* Desktop phone CTAs */}
+          <div className="hidden lg:flex items-center gap-1 shrink-0">
+            <div className="w-px h-5 bg-border mx-2" aria-hidden="true" />
+            <a
+              href={CONTACT.warehouse.phoneHref}
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-primary hover:text-accent transition-colors rounded-md hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+              aria-label={`Обади се на склада: ${CONTACT.warehouse.phone}`}
+            >
+              <Phone size={15} aria-hidden="true" />
+              {CONTACT.warehouse.phone}
+            </a>
+            <span className="text-border text-sm select-none" aria-hidden="true">|</span>
+            <a
+              href={CONTACT.store.phoneHref}
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-primary hover:text-accent transition-colors rounded-md hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+              aria-label={`Обади се на магазина: ${CONTACT.store.phone}`}
+            >
+              <Phone size={15} aria-hidden="true" />
+              {CONTACT.store.phone}
+            </a>
+          </div>
 
           {/* Mobile controls */}
           <div className="flex lg:hidden items-center gap-2">
@@ -129,13 +122,13 @@ export function Header() {
         }`}
       >
         {/* Menu header */}
-        <div className="flex items-center justify-between px-6 h-16 border-b border-border">
+        <div className="flex items-center justify-between px-6 h-[72px] border-b border-border">
           <Image
             src="/assets/logo.png"
             alt={HEADER.logoAlt}
-            width={120}
-            height={40}
-            className="h-9 w-auto object-contain"
+            width={130}
+            height={44}
+            className="h-10 w-auto object-contain"
           />
           <button
             type="button"
@@ -161,15 +154,6 @@ export function Header() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href={HEADER.ctaHref}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-3 text-base font-medium text-primary hover:bg-surface rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                {HEADER.ctaLabel}
-              </Link>
-            </li>
           </ul>
         </nav>
 
@@ -196,7 +180,6 @@ export function Header() {
               <div>{CONTACT.store.phone}</div>
             </div>
           </a>
-          <p className="text-xs text-muted text-center pt-1">{HEADER.hoursLabel}</p>
         </div>
       </div>
     </header>

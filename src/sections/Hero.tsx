@@ -1,6 +1,5 @@
 import Image from 'next/image'
-import Link from 'next/link'
-import { Phone, ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { HERO } from '@/lib/content'
 
@@ -8,7 +7,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden h-screen [height:100svh] lg:h-[85vh] lg:min-h-[600px] lg:max-h-[760px]"
+      className="relative overflow-hidden h-screen [height:100svh] lg:h-[85vh] lg:min-h-[600px] lg:max-h-[780px]"
     >
       {/* Ken Burns applied to wrapper div, NOT to Image — avoids Next.js optimization conflicts */}
       <div className="absolute inset-0 animate-ken-burns">
@@ -23,12 +22,12 @@ export function Hero() {
         />
       </div>
 
-      {/* Layered overlays (bottom → top): gradient depth + brand navy */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-      <div className="absolute inset-0 bg-primary/65" />
+      {/* Layered overlays: lighter gradient depth + softer brand navy */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+      <div className="absolute inset-0 bg-primary/38" />
 
-      {/* pb-16 on mobile = clear zone above ChevronDown to prevent overlap on short screens */}
-      <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-8 pb-16 lg:pb-0 text-center lg:text-left">
+      {/* Content */}
+      <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-8 pb-20 lg:pb-0 text-center lg:text-left">
         <h1
           id="hero-heading"
           className="font-display font-bold text-white text-4xl lg:text-[56px] tracking-tight leading-tight animate-fade-in"
@@ -38,41 +37,42 @@ export function Hero() {
         </h1>
 
         <p
-          className="text-white/85 text-base lg:text-lg leading-relaxed mt-4 lg:mt-6 max-w-[640px] mx-auto lg:mx-0 animate-fade-in"
+          className="text-white/85 text-base lg:text-lg leading-relaxed mt-5 lg:mt-6 max-w-[600px] mx-auto lg:mx-0 animate-fade-in"
           style={{ animationDelay: '0.5s' }}
         >
           {HERO.subheadline}
         </p>
 
         <div
-          className="flex flex-col items-center gap-4 mt-8 lg:flex-row lg:items-center lg:gap-6 lg:mt-10 animate-fade-in"
+          className="flex justify-center lg:justify-start mt-8 lg:mt-10 animate-fade-in"
           style={{ animationDelay: '0.7s' }}
         >
           <Button
             variant="primary"
-            href={HERO.ctaPrimaryHref}
-            fullWidth
-            className="lg:w-auto"
+            size="lg"
+            href={HERO.ctaContactHref}
+            className="w-full sm:w-auto"
           >
-            <Phone size={18} aria-hidden="true" />
-            {HERO.ctaPrimaryLabel}
+            {HERO.ctaContactLabel}
           </Button>
-
-          <Link
-            href={HERO.ctaSecondaryHref}
-            className="inline-flex items-center gap-1.5 text-white font-medium hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent focus-visible:outline-none rounded-sm transition-opacity duration-200 active:opacity-70"
-          >
-            {HERO.ctaSecondaryLabel}
-            <ChevronRight size={16} aria-hidden="true" />
-          </Link>
         </div>
       </div>
 
-      <ChevronDown
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/70 animate-pulse-2x"
-        size={28}
-        aria-hidden="true"
-      />
+      {/* Ribbon scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-pulse-2x">
+        <a
+          href="#produkti"
+          aria-label="Разгледайте продуктите"
+          className="flex flex-col items-center gap-1.5 text-white/70 hover:text-white transition-colors focus-visible:outline-none"
+        >
+          <span className="text-xs font-medium tracking-widest uppercase select-none">
+            Разгледайте
+          </span>
+          <span className="flex items-center justify-center w-8 h-8 rounded-full border border-white/30 backdrop-blur-sm bg-white/10">
+            <ChevronDown size={16} aria-hidden="true" />
+          </span>
+        </a>
+      </div>
     </section>
   )
 }

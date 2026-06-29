@@ -4,10 +4,8 @@ export const HERO = {
   headline: 'Всичко за Вашия Ремонт — на едно място в Пловдив',
   subheadline:
     'Официален представител на Benjamin Moore, PPG, Baumit, Mapei и над 20 водещи марки. Два обекта в Пловдив с наш транспорт.',
-  ctaPrimaryLabel: 'Обади се: 0876 032868',
-  ctaPrimaryHref: 'tel:+359876032868',
-  ctaSecondaryLabel: 'Разгледай продуктите',
-  ctaSecondaryHref: '/paints',
+  ctaContactLabel: 'Свържете се с нас',
+  ctaContactHref: '#kontakti',
   imageAlt: 'Интериор на магазин Макстерм с бои Benjamin Moore и ламинирани подове',
 } as const
 
@@ -85,28 +83,28 @@ export const CATEGORIES = {
   items: [
     {
       title: 'Интериорни и Фасадни Бои',
-      description: 'Benjamin Moore, PPG, Vitex, Colorstyle — над 6 000 цвята',
+      description: 'Интериорни и фасадни бои от официални представителства. Цветове, покритие и дълготрайност на ниво.',
       image: '/assets/images/shop-interior.png',
       alt: 'Рафтове с бои и декоративни материали в магазин MaxDecor',
       href: '/paints',
     },
     {
       title: 'Ламиниран Паркет',
-      description: 'Kronopol, Swiss Krono, Tarkett, Classen — мостри в двата обекта',
+      description: 'Висококачествен ламинат от водещи европейски производители — за трайна красота под краката ви.',
       image: '/assets/images/store-tools.png',
       alt: 'Мостри от ламиниран паркет и инструменти в магазина',
       href: '/laminatefloor',
     },
     {
       title: 'Строителни Материали',
-      description: 'XPS, EPS, Baumit, Mapei, Technogips Pro, хидроизолации и още',
+      description: 'Топлоизолация, замазки, лепила и шпакловки — всичко необходимо за качествен ремонт.',
       image: '/assets/images/warehouse-interior.png',
       alt: 'Строителни материали и изолация в складовата база Макстерм',
       href: '/строителни-материали-xps',
     },
     {
       title: 'Лайсни и Первази',
-      description: 'Алуминиеви, ПВЦ и МДФ лайсни — перфектен завършек за всяка настилка',
+      description: 'Първази, ъглови и декоративни профили за финален щрих с характер и прецизност.',
       image: '/assets/images/warehouse-exterior.png',
       alt: 'Алуминиеви и ПВЦ лайсни и первази за подове',
       href: '/europrofil',
@@ -185,9 +183,9 @@ export const FINAL_CTA = {
   headline: 'Посетете ни в Пловдив',
   subheadline:
     'Намерете всичко за Вашия ремонт — на едно място. Складова база и магазин с мостри.',
-  cta1Label: '0876 032868 — Склад',
+  cta1Label: 'Склад: 0876 032868',
   cta1Href: 'tel:+359876032868',
-  cta2Label: '0893 305306 — Магазин',
+  cta2Label: 'Магазин: 0893 305306',
   cta2Href: 'tel:+359893305306',
   cta3Label: 'Напишете ни',
   cta3Href: '/kontakti',
