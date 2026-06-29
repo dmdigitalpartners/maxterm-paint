@@ -1,0 +1,6 @@
+/*
+  All animation keyframes are defined in tailwind.config.ts under theme.extend.keyframes.
+  This file is intentionally empty — do not add duplicate keyframes here.
+  Approved animations: fadeIn, slideUp, kenBurns, marqueeLeft, pulse2x
+  Reference: tailwind.config.ts → keyframes section
+*/
