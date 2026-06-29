@@ -8,13 +8,16 @@ export function ViberButton() {
       rel="noopener noreferrer"
       aria-label="Пишете ни в Viber"
       title="Пишете ни в Viber"
-      className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 active:scale-100 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#7360F2]"
-      style={{ backgroundColor: '#7360F2' }}
+      className="fixed bottom-8 right-8 z-40 w-16 h-16 rounded-full flex items-center justify-center hover:scale-110 active:scale-100 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#7360F2]"
+      style={{
+        backgroundColor: '#7360F2',
+        boxShadow: '0 0 18px rgba(115,96,242,0.45), 0 4px 16px rgba(0,0,0,0.18)',
+      }}
     >
       {/* Viber icon */}
       <svg
-        width="28"
-        height="28"
+        width="30"
+        height="30"
         viewBox="0 0 32 32"
         fill="white"
         aria-hidden="true"

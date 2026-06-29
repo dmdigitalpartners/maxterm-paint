@@ -21,6 +21,13 @@ export function Header() {
     return () => { document.body.style.overflow = '' }
   }, [mobileMenuOpen])
 
+  function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (window.location.pathname === '/') {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50">
       {/* ── Main nav ─────────────────────────────────────────────── */}
@@ -30,9 +37,10 @@ export function Header() {
         }`}
       >
         <div className="max-w-content mx-auto px-6 lg:px-8 h-[72px] lg:h-20 flex items-center justify-between gap-8">
-          {/* Logo */}
+          {/* Logo — smooth scroll to top on homepage */}
           <Link
             href="/"
+            onClick={handleLogoClick}
             className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
             aria-label="Макстерм — начало"
           >
@@ -52,7 +60,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-3.5 py-2 text-sm font-medium text-textPrimary hover:text-primary rounded-md transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+                className="relative px-3.5 py-2 text-sm font-medium text-textPrimary hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap after:absolute after:left-3.5 after:right-3.5 after:bottom-0.5 after:h-[2px] after:rounded-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-200"
               >
                 {item.label}
               </Link>
@@ -61,19 +69,18 @@ export function Header() {
 
           {/* Desktop phone CTAs */}
           <div className="hidden lg:flex items-center gap-1 shrink-0">
-            <div className="w-px h-5 bg-border mx-2" aria-hidden="true" />
             <a
               href={CONTACT.warehouse.phoneHref}
-              className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-primary hover:text-accent transition-colors rounded-md hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-primary hover:text-accent transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
               aria-label={`Обади се на склада: ${CONTACT.warehouse.phone}`}
             >
               <Phone size={15} aria-hidden="true" />
               {CONTACT.warehouse.phone}
             </a>
-            <span className="text-border text-sm select-none" aria-hidden="true">|</span>
+            <span className="text-border text-sm select-none inline-block rotate-[20deg]" aria-hidden="true">|</span>
             <a
               href={CONTACT.store.phoneHref}
-              className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-primary hover:text-accent transition-colors rounded-md hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-primary hover:text-accent transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap"
               aria-label={`Обади се на магазина: ${CONTACT.store.phone}`}
             >
               <Phone size={15} aria-hidden="true" />
@@ -148,7 +155,7 @@ export function Header() {
                 <Link
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-base font-medium text-textPrimary hover:bg-surface hover:text-primary rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  className="block px-4 py-3 text-base font-medium text-textPrimary hover:text-primary rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 >
                   {item.label}
                 </Link>

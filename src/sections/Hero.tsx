@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden h-screen [height:100svh] lg:h-[85vh] lg:min-h-[600px] lg:max-h-[780px]"
+      className="relative overflow-hidden h-screen [height:100svh]"
     >
       {/* Ken Burns applied to wrapper div, NOT to Image — avoids Next.js optimization conflicts */}
       <div className="absolute inset-0 animate-ken-burns">
