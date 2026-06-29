@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { montserrat, inter } from '@/lib/fonts'
+import { Header } from '@/sections/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -30,6 +31,7 @@ export default function RootLayout({
         >
           Към основното съдържание
         </a>
+        <Header />
         {children}
       </body>
     </html>

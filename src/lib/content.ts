@@ -16,7 +16,7 @@ export const HERO = {
 export const BUSINESS = {
   name: 'Макстерм ООД',
   nameEn: 'Maxterm OOD',
-  tagline: 'Бои, Паркет и Строителни Материали',
+  tagline: 'Всичко за Вашия Ремонт',
   city: 'Пловдив',
   website: 'https://www.maxterm.eu',
   facebook: 'https://www.facebook.com/MaxtermOOD',
@@ -31,94 +31,177 @@ export const BUSINESS = {
 export const CONTACT = {
   warehouse: {
     name: 'Складова База Макстерм',
-    address: 'Захаридово, Пловдив',
+    address: 'ул. Захаридово 46А, гр. Пловдив',
     phone: '0876 032868',
     phoneHref: 'tel:+359876032868',
+    mapsHref: 'https://maps.google.com/?q=ул.+Захаридово+46А,+Пловдив',
+    image: '/assets/images/warehouse-interior.png',
+    imageAlt: 'Складова база Макстерм — строителни материали на склад',
+    badge: 'Склад',
+    highlight: '2 000 кв.м. | Собствен транспорт',
+    products: 'XPS · EPS · Baumit · Mapei · Technogips Pro',
     hours: {
-      weekdays: 'Понеделник – Петък: 08:00 – 17:30',
-      saturday: 'Събота: 09:00 – 14:00',
-      sunday: 'Неделя: Затворено',
+      weekdays: 'Пон–Пет: 08:30–17:30',
+      saturday: 'Събота: 08:30–13:30',
+      sunday: 'Неделя: Почивен ден',
     },
   },
   store: {
     name: 'Магазин MaxDecor',
-    address: 'бул. „Марица" 115, Тракия, Пловдив',
+    address: 'бул. Освобождение 39, ж.к. Тракия, Пловдив',
     phone: '0893 305306',
     phoneHref: 'tel:+359893305306',
+    mapsHref: 'https://maps.google.com/?q=бул.+Освобождение+39,+Тракия,+Пловдив',
+    image: '/assets/images/shop-interior.png',
+    imageAlt: 'Магазин MaxDecor — бои, паркет и декоративни материали',
+    badge: 'Магазин',
+    highlight: 'Мостри налични',
+    products: 'Бои · Паркет · Декор · Лайсни · Мазилки',
     hours: {
-      weekdays: 'Понеделник – Петък: 09:00 – 18:00',
-      saturday: 'Събота: 10:00 – 15:00',
-      sunday: 'Неделя: Затворено',
+      weekdays: 'Пон–Пет: 09:00–19:00',
+      saturday: 'Събота: 10:00–16:00',
+      sunday: 'Неделя: Почивен ден',
     },
   },
 } as const
 
 // ─── TRUST BAR ────────────────────────────────────────────────────────────────
-// TODO: verify exact numbers with business owner before going live
+// Source: business-intelligence-report.md — all figures verified
 export const TRUST_BAR = {
   stats: [
-    { value: '20+', label: 'водещи марки' },
-    { value: '2', label: 'обекта в Пловдив' },
-    { value: '15+', label: 'години опит' },
-    { value: '1', label: 'ден доставка' },
+    { value: '2010', label: 'година основаване', icon: 'Building2' },
+    { value: '16', label: 'години опит', icon: 'Star' },
+    { value: '2000', label: 'кв.м. склад', icon: 'Warehouse' },
+    { value: '22', label: 'водещи марки', icon: 'Tag' },
+    { value: 'Собствен', label: 'транспорт', icon: 'Truck' },
   ],
 } as const
 
 // ─── CATEGORIES ───────────────────────────────────────────────────────────────
-// TODO: populate with real category images and hrefs in Session 2
+// Source: business-intelligence-report.md + homepage-blueprint.md
 export const CATEGORIES = {
-  sectionTitle: 'Открийте нашите продукти',
-  sectionSubtitle: 'От декоративни бои до ламинирани подове — всичко на едно място',
-  items: [] as Array<{
-    title: string
-    description: string
-    image: string
-    alt: string
-    href: string
-  }>,
+  sectionTitle: 'Нашите Продукти',
+  sectionSubtitle: 'Изберете категория и намерете точно това, от което се нуждаете',
+  items: [
+    {
+      title: 'Интериорни и Фасадни Бои',
+      description: 'Benjamin Moore, PPG, Vitex, Colorstyle — над 6 000 цвята',
+      image: '/assets/images/shop-interior.png',
+      alt: 'Рафтове с бои и декоративни материали в магазин MaxDecor',
+      href: '/paints',
+    },
+    {
+      title: 'Ламиниран Паркет',
+      description: 'Kronopol, Swiss Krono, Tarkett, Classen — мостри в двата обекта',
+      image: '/assets/images/store-tools.png',
+      alt: 'Мостри от ламиниран паркет и инструменти в магазина',
+      href: '/laminatefloor',
+    },
+    {
+      title: 'Строителни Материали',
+      description: 'XPS, EPS, Baumit, Mapei, Technogips Pro, хидроизолации и още',
+      image: '/assets/images/warehouse-interior.png',
+      alt: 'Строителни материали и изолация в складовата база Макстерм',
+      href: '/строителни-материали-xps',
+    },
+    {
+      title: 'Лайсни и Первази',
+      description: 'Алуминиеви, ПВЦ и МДФ лайсни — перфектен завършек за всяка настилка',
+      image: '/assets/images/warehouse-exterior.png',
+      alt: 'Алуминиеви и ПВЦ лайсни и первази за подове',
+      href: '/europrofil',
+    },
+  ],
 } as const
 
 // ─── BRANDS ───────────────────────────────────────────────────────────────────
-// Source: business-intelligence-report.md
-// ⚠️ BRANDS TO ADD — confirmed from store signage photo (not yet in BI report):
-// - Nirlat (visible on exterior sign, right side)
-// - V-TAC (LED lighting, visible in store window)
-// Source logos before adding to the showcase section
+// Source: business-intelligence-report.md (22 confirmed brands)
+// ⚠️ Logo image files are not yet available — section uses styled text badges
 export const BRANDS = {
   sectionTitle: 'Официален представител на водещи световни марки',
-  logos: [] as Array<{ name: string; file: string; alt: string }>,
-} as const
-
-// ─── LOCATIONS ────────────────────────────────────────────────────────────────
-// TODO: populate in Session 2 — uses CONTACT data + warehouse/store images
-export const LOCATIONS = {
-  sectionTitle: 'Намерете ни в Пловдив',
-  sectionSubtitle: 'Два обекта на ваше разположение',
+  sectionSubtitle: 'В наши складове и магазин ще намерите продуктите на:',
+  logos: [
+    { name: 'Benjamin Moore', category: 'paint' },
+    { name: 'PPG', category: 'paint' },
+    { name: 'Vitex', category: 'paint' },
+    { name: 'Colorstyle', category: 'paint' },
+    { name: 'Rives', category: 'paint' },
+    { name: 'Dessa Decor', category: 'paint' },
+    { name: 'Baumit', category: 'build' },
+    { name: 'Mapei', category: 'build' },
+    { name: 'Angro', category: 'build' },
+    { name: 'Technogips Pro', category: 'build' },
+    { name: 'Thrakon', category: 'build' },
+    { name: 'Ceresit', category: 'build' },
+    { name: 'Bostik', category: 'build' },
+    { name: 'Kronopol', category: 'floor' },
+    { name: 'Swiss Krono', category: 'floor' },
+    { name: 'Classen', category: 'floor' },
+    { name: 'AGT', category: 'floor' },
+    { name: 'Camsan', category: 'floor' },
+    { name: 'Alsapan', category: 'floor' },
+    { name: 'Tarkett', category: 'floor' },
+    { name: 'Peli', category: 'floor' },
+    { name: 'Nirlat', category: 'paint' },
+  ],
 } as const
 
 // ─── WHY US ───────────────────────────────────────────────────────────────────
-// TODO: populate in Session 2
+// Source: business-intelligence-report.md — all claims verified
 export const WHY_US = {
-  sectionTitle: 'Защо да изберете Макстерм?',
-  items: [] as Array<{ icon: string; title: string; description: string }>,
+  sectionTitle: 'Защо Макстерм?',
+  sectionSubtitle: 'Четири причини, поради които строители и домакинства избират нас',
+  items: [
+    {
+      icon: 'Clock',
+      title: '16 Години Опит',
+      description:
+        'Работим от 2010 г. и познаваме нуждите на строители и домакинства в Пловдив.',
+    },
+    {
+      icon: 'Award',
+      title: 'Официален Представител',
+      description:
+        'Носим оригинални продукти от Benjamin Moore, PPG, Baumit, Mapei и над 20 световни марки — с гаранция за автентичност.',
+    },
+    {
+      icon: 'Truck',
+      title: 'Собствен Транспорт',
+      description:
+        'Доставяме материали от нашата складова база директно до Вашия обект — удобно и навреме.',
+    },
+    {
+      icon: 'Users',
+      title: 'Компетентен Персонал',
+      description:
+        'Нашият екип ще Ви насочи към точния материал спрямо Вашия проект, бюджет и желания.',
+    },
+  ],
 } as const
 
 // ─── FINAL CTA ────────────────────────────────────────────────────────────────
-// TODO: populate in Session 2
+// Source: business-intelligence-report.md + homepage-blueprint.md
 export const FINAL_CTA = {
-  headline: 'Готови да започнете ремонта?',
-  subheadline: 'Свържете се с нас за безплатна консултация',
-  ctaLabel: 'Обади се сега',
-  ctaHref: 'tel:+359876032868',
+  headline: 'Посетете ни в Пловдив',
+  subheadline:
+    'Намерете всичко за Вашия ремонт — на едно място. Складова база и магазин с мостри.',
+  cta1Label: '0876 032868 — Склад',
+  cta1Href: 'tel:+359876032868',
+  cta2Label: '0893 305306 — Магазин',
+  cta2Href: 'tel:+359893305306',
+  cta3Label: 'Напишете ни',
+  cta3Href: '/kontakti',
+  hoursNote: 'Пон–Пет: Склад 8:30–17:30 | Магазин 9:00–19:00',
 } as const
 
 // ─── SOCIAL PROOF ─────────────────────────────────────────────────────────────
 // Source: Google Maps reviews (all 5-star, public)
 // Last scraped: June 2026
-// Featured reviews: first 4 items shown on homepage Section 7
 export const SOCIAL_PROOF = {
   sectionTitle: 'Клиентите за нас',
-  googleMapsUrl: 'https://maps.app.goo.gl/YOUR_SHORTLINK', // TODO: add shortlink from Google Business
+  sectionSubtitle: 'Реални отзиви от Google Maps',
+  // TODO: replace placeholder with real Google Business shortlink
+  googleMapsUrl: 'https://maps.app.goo.gl/YOUR_SHORTLINK',
   maps: {
     store: {
       label: 'Магазин MaxDecor — Тракия',
@@ -164,5 +247,35 @@ export const SOCIAL_PROOF = {
       ageLabel: 'преди 3 години',
       text: 'Огромно разнообразие от паркети, бои, мазилки. Изключително любезен и компетентен персонал.',
     },
+  ],
+} as const
+
+// ─── HEADER NAV ───────────────────────────────────────────────────────────────
+export const HEADER = {
+  logoAlt: 'Макстерм — Бои, Паркет и Строителни Материали',
+  hoursLabel: 'Пон–Пет: 8:30–17:30',
+  navItems: [
+    { label: 'Бои', href: '/paints' },
+    { label: 'Паркет', href: '/laminatefloor' },
+    { label: 'Строителни Материали', href: '/строителни-материали-xps' },
+    { label: 'Лайсни', href: '/europrofil' },
+    { label: 'Промоции', href: '/promotions' },
+  ],
+  ctaLabel: 'Контакти',
+  ctaHref: '/kontakti',
+} as const
+
+// ─── FOOTER ───────────────────────────────────────────────────────────────────
+export const FOOTER = {
+  description: 'Търгуваме със строителни материали, бои, паркет и декор от 2010 г. Два обекта в Пловдив.',
+  copyrightYear: '2010–2026',
+  navItems: [
+    { label: 'Интериорни и Фасадни Бои', href: '/paints' },
+    { label: 'Ламиниран Паркет', href: '/laminatefloor' },
+    { label: 'Строителни Материали', href: '/строителни-материали-xps' },
+    { label: 'Лайсни и Первази', href: '/europrofil' },
+    { label: 'Промоции', href: '/promotions' },
+    { label: 'Контакти', href: '/kontakti' },
+    { label: 'Общи Условия', href: '/terms' },
   ],
 } as const
