@@ -87,7 +87,7 @@ function StatCell({
       : displayValue
 
   return (
-    <div className="flex flex-col items-center text-center gap-3 py-8 px-8">
+    <div className="flex flex-col items-center text-center gap-3 py-5 px-8">
       <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
         <Icon size={22} className="text-accent" aria-hidden="true" />
       </div>

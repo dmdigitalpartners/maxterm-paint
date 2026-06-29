@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden h-screen [height:100svh]"
+      className="relative overflow-hidden h-[calc(100svh-180px)] min-h-[400px]"
     >
       {/* Ken Burns applied to wrapper div, NOT to Image — avoids Next.js optimization conflicts */}
       <div className="absolute inset-0 animate-ken-burns">
@@ -26,7 +26,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-black/35" />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-8 pb-20 lg:pb-0 text-center lg:text-left">
+      <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-8 text-center lg:text-left">
         <h1
           id="hero-heading"
           className="font-display font-bold text-white text-4xl lg:text-[56px] tracking-tight leading-tight animate-fade-in"
