@@ -145,7 +145,8 @@ export const BRANDS = {
 // ─── WHY US ───────────────────────────────────────────────────────────────────
 // Source: business-intelligence-report.md — all claims verified
 export const WHY_US = {
-  sectionTitle: 'Правилният материал. От правилния човек. Навреме.',
+  sectionTitle: 'Правилен материал, честен съвет',
+  sectionTitleLine2: 'и доставка директно до вашия обект',
   sectionSubtitle:
     'Четири причини, поради които хората се връщат — вместо да търсят другаде.',
   items: [

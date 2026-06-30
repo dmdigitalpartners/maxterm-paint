@@ -48,6 +48,8 @@ export function WhyUs() {
             className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-white leading-tight"
           >
             {WHY_US.sectionTitle}
+            <br className="hidden lg:block" />
+            {' '}{WHY_US.sectionTitleLine2}
           </h2>
           <p className="text-white/65 text-base lg:text-lg mt-4 max-w-xl mx-auto">
             {WHY_US.sectionSubtitle}
