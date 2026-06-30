@@ -35,30 +35,35 @@ export function Footer() {
 
           {/* Column 1 — Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" aria-label="Макстерм — начало" className="inline-block mb-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+            <Link href="/" aria-label="Макстерм — начало" className="inline-block mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
               <Image
                 src="/assets/logo.png"
                 alt="Макстерм лого"
-                width={130}
-                height={44}
-                className="h-10 w-auto object-contain brightness-0 invert"
+                width={160}
+                height={54}
+                className="h-14 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <p className="text-sm text-white/60 leading-relaxed mb-5 max-w-[220px]">
+            <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-[220px]">
               {FOOTER.description}
             </p>
-            <a
-              href={BUSINESS.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Макстерм във Facebook"
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-              </svg>
-              <span className="text-sm">Facebook</span>
-            </a>
+
+            {/* Social media */}
+            <div>
+              <FooterHeading>Социални мрежи</FooterHeading>
+              <a
+                href={BUSINESS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Макстерм във Facebook"
+                className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
+                <span>Facebook</span>
+              </a>
+            </div>
           </div>
 
           {/* Column 2 — Warehouse */}
