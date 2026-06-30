@@ -1,8 +1,8 @@
 import React from 'react'
-import { Clock, Award, Truck, Users } from 'lucide-react'
+import { Users, ShieldCheck, Truck, Compass } from 'lucide-react'
 import { WHY_US } from '@/lib/content'
 
-const ICON_MAP = { Clock, Award, Truck, Users } as const
+const ICON_MAP = { Users, ShieldCheck, Truck, Compass } as const
 type IconName = keyof typeof ICON_MAP
 
 function FeatureCell({
@@ -41,7 +41,7 @@ export function WhyUs() {
         {/* Section header */}
         <div className="text-center mb-10 lg:mb-14">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
-            Нашите предимства
+            Защо клиентите се връщат
           </p>
           <h2
             id="why-us-heading"
