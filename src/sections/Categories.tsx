@@ -13,6 +13,8 @@ interface CategoryCardProps {
   href: string
   delay: number
   visible: boolean
+  featured?: boolean
+  className?: string
 }
 
 function CategoryCard({
@@ -23,41 +25,53 @@ function CategoryCard({
   href,
   delay,
   visible,
+  featured = false,
+  className = '',
 }: CategoryCardProps) {
   return (
     <a
       href={href}
-      className={`group block bg-white rounded-[10px] border border-border overflow-hidden
-        shadow-[0_2px_8px_rgba(0,0,0,0.06)]
-        hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:-translate-y-1
-        transition-all duration-200 ease-out
+      className={`group relative block overflow-hidden rounded-2xl
+        h-64 sm:h-72 lg:h-auto
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
-        ${visible ? 'opacity-100 translate-y-0' : ''}
+        transition-all duration-500
+        ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+        ${className}
       `}
       style={visible ? { transitionDelay: `${delay}ms` } : undefined}
     >
-      {/* Image */}
-      <div className="relative aspect-video overflow-hidden bg-surface">
-        <Image
-          src={image}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-10 transition-opacity duration-200" />
-      </div>
+      {/* Full-bleed image */}
+      <Image
+        src={image}
+        alt={alt}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      />
 
-      {/* Card body */}
-      <div className="p-5 lg:p-6 flex flex-col gap-3">
-        <h3 className="font-display font-bold text-base lg:text-xl text-textPrimary leading-snug">
+      {/* Permanent gradient — ensures text legibility at all times */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/5" />
+
+      {/* Subtle hover tint */}
+      <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/15 transition-colors duration-300" />
+
+      {/* Text anchored to bottom */}
+      <div className={`absolute bottom-0 left-0 right-0 ${featured ? 'p-7 lg:p-9' : 'p-5 lg:p-6'}`}>
+        <h3
+          className={`font-display font-bold text-white leading-tight
+            ${featured ? 'text-2xl lg:text-[28px]' : 'text-lg lg:text-xl'}`}
+        >
           {title}
         </h3>
-        <p className="text-sm text-muted leading-relaxed">{description}</p>
-        <div className="mt-auto pt-2 flex items-center gap-1 text-sm font-semibold text-primary group-hover:text-accent transition-colors">
+        <p
+          className={`text-white/75 text-sm leading-snug mt-1.5
+            ${featured ? 'line-clamp-3 max-w-[340px]' : 'line-clamp-2'}`}
+        >
+          {description}
+        </p>
+        <div className="mt-3 flex items-center gap-1.5 text-accent text-sm font-semibold group-hover:gap-3 transition-all duration-200">
           Разгледай
-          <ChevronRight size={15} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
+          <ChevronRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
         </div>
       </div>
     </a>
@@ -78,21 +92,30 @@ export function Categories() {
           observer.disconnect()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     )
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
+  const items = CATEGORIES.items as ReadonlyArray<{
+    title: string
+    description: string
+    image: string
+    alt: string
+    href: string
+  }>
+
   return (
     <section
       ref={ref}
+      id="produkti"
       aria-labelledby="categories-heading"
-      className="bg-white py-14 lg:py-24"
+      className="bg-white py-14 lg:py-20"
     >
       <div className="max-w-content mx-auto px-6 lg:px-8">
         {/* Section header */}
-        <div className="mb-10 lg:mb-14">
+        <div className="mb-10 lg:mb-12">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Асортимент
           </p>
@@ -107,16 +130,48 @@ export function Categories() {
           </p>
         </div>
 
-        {/* Cards grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
-          {(CATEGORIES.items as ReadonlyArray<{ title: string; description: string; image: string; alt: string; href: string }>).map((item, i) => (
-            <CategoryCard
-              key={item.href}
-              {...item}
-              delay={i * 100}
-              visible={visible}
-            />
-          ))}
+        {/*
+          Desktop bento grid (3 cols × 2 rows):
+          ┌───────────────┬─────────┬─────────┐
+          │               │         │         │
+          │  Бои  (2 rows)│ Паркет  │ Строит. │  340 px
+          │               ├─────────┴─────────┤
+          │               │  Лайсни (2 cols)  │  280 px
+          └───────────────┴───────────────────┘
+          Cards are direct grid children so CSS grid stretch controls height on desktop.
+        */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:grid-rows-[340px_280px] lg:gap-5">
+
+          {/* Paints — featured tall card, spans 2 rows on desktop */}
+          <CategoryCard
+            {...items[0]}
+            delay={0}
+            visible={visible}
+            featured
+            className="lg:row-span-2"
+          />
+
+          {/* Laminate — top-right square */}
+          <CategoryCard
+            {...items[1]}
+            delay={100}
+            visible={visible}
+          />
+
+          {/* Building Materials — top-far-right square */}
+          <CategoryCard
+            {...items[2]}
+            delay={200}
+            visible={visible}
+          />
+
+          {/* Skirting — panoramic wide card, spans 2 cols on desktop */}
+          <CategoryCard
+            {...items[3]}
+            delay={300}
+            visible={visible}
+            className="lg:col-span-2"
+          />
         </div>
       </div>
     </section>
