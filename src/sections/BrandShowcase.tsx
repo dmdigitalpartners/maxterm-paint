@@ -64,10 +64,15 @@ export function BrandShowcase() {
       </div>
 
       {/* Tier 2 — Infinite logo marquee */}
-      <div className="relative overflow-hidden">
+      <div className="max-w-content mx-auto px-6 lg:px-8 mb-4">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted">
+          Също представляваме
+        </p>
+      </div>
+      <div className="max-w-[900px] mx-auto relative overflow-hidden">
         {/* Fade edges matching the section background */}
-        <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
 
         {/* Two identical lists side-by-side; CSS translates by -50% of the combined width,
             looping back to start for a seamless infinite scroll */}
