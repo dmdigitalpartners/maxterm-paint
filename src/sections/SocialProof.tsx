@@ -89,19 +89,6 @@ export function SocialProof() {
       className="bg-surface py-14 lg:py-24"
     >
       <div className="max-w-content mx-auto px-6 lg:px-8">
-        {/* Team / Company intro */}
-        <div className="mb-14 lg:mb-20 border-l-4 border-accent pl-6 lg:pl-8 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
-            Нашият Екип
-          </p>
-          <p className="font-display font-bold text-xl lg:text-2xl text-textPrimary leading-snug mb-3">
-            Специалисти с над 16 години опит
-          </p>
-          <p className="text-muted text-base leading-relaxed">
-            Зад Макстерм стои екип от специалисти в строителните материали и довършителните работи. Нашата мисия е да намерим правилното решение за всеки проект — с компетентност, честност и грижа за детайла.
-          </p>
-        </div>
-
         {/* Section header */}
         <div className="mb-10 lg:mb-14 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
