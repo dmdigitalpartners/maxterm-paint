@@ -17,14 +17,14 @@ function FeatureCell({
   const Icon = ICON_MAP[icon as IconName] ?? Users
 
   return (
-    <div className="flex flex-col items-center text-center gap-4 px-6 py-8 lg:py-10">
+    <div className="flex flex-col items-center text-center gap-4 px-8 lg:px-10 py-8 lg:py-10">
       <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center shrink-0">
         <Icon size={30} className="text-accent" aria-hidden="true" />
       </div>
       <h3 className="font-display font-bold text-lg lg:text-xl text-white leading-snug">
         {title}
       </h3>
-      <p className="text-white/75 text-sm lg:text-base leading-relaxed max-w-[240px]">
+      <p className="text-white/75 text-sm lg:text-base leading-relaxed max-w-[280px]">
         {description}
       </p>
     </div>
