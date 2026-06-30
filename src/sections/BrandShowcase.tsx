@@ -4,31 +4,15 @@ const FEATURED_BRAND_NAMES = new Set([
   'Benjamin Moore', 'PPG', 'Mapei', 'Baumit', 'Ceresit', 'Tarkett',
 ])
 
-const categoryMeta: Record<string, { badge: string; label: string }> = {
-  paint: { badge: 'bg-amber-50 border-amber-200 text-amber-700',   label: 'Бои' },
-  build: { badge: 'bg-blue-50 border-blue-200 text-blue-700',      label: 'Строителни' },
-  floor: { badge: 'bg-emerald-50 border-emerald-200 text-emerald-700', label: 'Паркет' },
-}
-
-function FeaturedCard({ name, category, logo }: { name: string; category: string; logo: string }) {
-  const meta = categoryMeta[category] ?? categoryMeta.build
+function FeaturedCard({ name, logo }: { name: string; logo: string }) {
   return (
-    <div className="bg-white rounded-2xl border border-border shadow-sm flex flex-col hover:shadow-md transition-shadow duration-200">
-      {/* Logo area — neutral white so brand colors read cleanly */}
-      <div className="flex-1 flex items-center justify-center px-6 py-7 min-h-[120px]">
-        <img
-          src={logo}
-          alt={name}
-          className="max-h-16 max-w-full object-contain"
-          draggable={false}
-        />
-      </div>
-      {/* Category pill */}
-      <div className="px-4 pb-4 flex justify-center">
-        <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${meta.badge}`}>
-          {meta.label}
-        </span>
-      </div>
+    <div className="bg-white rounded-2xl border border-border shadow-sm flex items-center justify-center min-h-[130px] px-6 py-8 hover:shadow-md transition-shadow duration-200">
+      <img
+        src={logo}
+        alt={name}
+        className="max-h-16 max-w-full object-contain"
+        draggable={false}
+      />
     </div>
   )
 }
@@ -71,34 +55,23 @@ export function BrandShowcase() {
       </div>
 
       {/* Tier 1 — Featured brand cards */}
-      <div className="max-w-content mx-auto px-6 lg:px-8 mb-10 lg:mb-12">
+      <div className="max-w-content mx-auto px-6 lg:px-8 mb-10 lg:mb-14">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 lg:gap-5">
           {featured.map(brand => (
-            <FeaturedCard
-              key={brand.name}
-              name={brand.name}
-              category={brand.category}
-              logo={brand.logo}
-            />
+            <FeaturedCard key={brand.name} name={brand.name} logo={brand.logo} />
           ))}
         </div>
       </div>
 
-      {/* Tier 2 — Secondary logo strip (contained marquee) */}
-      <div className="max-w-content mx-auto px-6 lg:px-8 mb-4">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-          Също представляваме
-        </p>
-      </div>
-      <div className="max-w-[900px] mx-auto relative overflow-hidden">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
+      {/* Tier 2 — Infinite logo marquee */}
+      <div className="relative overflow-hidden">
+        {/* Fade edges matching the section background */}
+        <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
 
-        <div
-          className="flex w-max hover:[animation-play-state:paused]"
-          style={{ animation: 'marqueeLeft 50s linear infinite' }}
-        >
+        {/* Two identical lists side-by-side; CSS translates by -50% of the combined width,
+            looping back to start for a seamless infinite scroll */}
+        <div className="flex w-max animate-marquee">
           <ul className="flex items-center gap-4 pr-4" aria-label="Допълнителни марки">
             {rest.map((brand, i) => (
               <li key={`a-${i}`} className="shrink-0">

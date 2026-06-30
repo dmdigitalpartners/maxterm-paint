@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Marquee keyframe defined here so it survives Tailwind JIT purging
+   (inline style references can't be scanned by the content purger) */
+@keyframes marqueeLeft {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marqueeLeft 36s linear infinite;
+    will-change: transform;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
 @layer base {
   :root {
     --color-primary: #1B3A5C;
