@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Building2, Star, Warehouse, Tag, Truck } from 'lucide-react'
+import { Building2, Star, Tag, Truck } from 'lucide-react'
 
 const STATS = [
   {
@@ -17,13 +17,6 @@ const STATS = [
     displayValue: '16',
     label: 'Години опит',
     suffix: '+',
-  },
-  {
-    icon: Warehouse,
-    numericValue: 2000,
-    displayValue: '2 000',
-    label: 'кв.м. склад',
-    suffix: '',
   },
   {
     icon: Tag,
@@ -80,24 +73,20 @@ function StatCell({
   const count = useCountUp(numericValue, 1200, triggered)
 
   const formatted =
-    numericValue !== null
-      ? numericValue === 2000
-        ? count.toLocaleString('bg-BG')
-        : String(count)
-      : displayValue
+    numericValue !== null ? String(count) : displayValue
 
   return (
-    <div className="flex flex-col items-center text-center gap-3 py-5 px-8">
-      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-        <Icon size={22} className="text-accent" aria-hidden="true" />
+    <div className="flex flex-col items-center text-center gap-2 py-5 px-8">
+      <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+        <Icon size={18} className="text-accent" aria-hidden="true" />
       </div>
-      <p className="font-display font-bold text-3xl lg:text-4xl text-textPrimary leading-none tabular-nums">
+      <p className="font-display font-bold text-2xl lg:text-3xl text-textPrimary leading-none tabular-nums">
         {formatted}
         {numericValue !== null && suffix ? (
           <span className="text-textPrimary">{suffix}</span>
         ) : null}
       </p>
-      <p className="text-xs font-semibold uppercase tracking-widest text-muted">{label}</p>
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">{label}</p>
     </div>
   )
 }
@@ -132,24 +121,16 @@ export function TrustBar() {
         Факти за Макстерм
       </h2>
       <div className="max-w-content mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr_1px_1fr] divide-y lg:divide-y-0 divide-border">
+        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr] divide-y lg:divide-y-0 divide-border">
           {STATS.map((stat, i) => (
             <React.Fragment key={stat.label}>
-              <div
-                className={
-                  i === 4
-                    ? 'col-span-2 lg:col-span-1 border-t border-border lg:border-t-0'
-                    : ''
-                }
-              >
-                <StatCell {...stat} triggered={triggered} />
-              </div>
+              <StatCell {...stat} triggered={triggered} />
               {i < STATS.length - 1 && (
                 <div
                   className="hidden lg:flex items-center justify-center"
                   aria-hidden="true"
                 >
-                  <div className="w-px bg-border self-stretch my-6" />
+                  <div className="w-px bg-border self-stretch my-5" />
                 </div>
               )}
             </React.Fragment>

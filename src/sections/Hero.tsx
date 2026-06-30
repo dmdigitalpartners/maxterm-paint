@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden h-[calc(100svh-180px)] min-h-[400px]"
+      className="relative overflow-hidden h-[calc(100svh-180px)] min-h-[400px] lg:h-auto lg:flex-1"
     >
       {/* Ken Burns applied to wrapper div, NOT to Image — avoids Next.js optimization conflicts */}
       <div className="absolute inset-0 animate-ken-burns">
@@ -60,7 +60,7 @@ export function Hero() {
             variant="outline"
             size="lg"
             href={HERO.ctaCatalogHref}
-            className="w-full sm:w-auto border-white text-white hover:bg-white/15 focus-visible:ring-white"
+            className="w-full sm:w-auto bg-white/20 border-white text-white hover:bg-white/30 focus-visible:ring-white"
           >
             {HERO.ctaCatalogLabel}
           </Button>

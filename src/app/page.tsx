@@ -13,8 +13,11 @@ export default function Home() {
   return (
     <>
       <main id="main-content">
-        <Hero />
-        <TrustBar />
+        {/* Wrapper makes hero + strip fill exactly the desktop viewport below the header */}
+        <div className="lg:h-[calc(100vh-80px)] lg:flex lg:flex-col">
+          <Hero />
+          <TrustBar />
+        </div>
         <Categories />
         <BrandShowcase />
         <Locations />

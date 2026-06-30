@@ -60,7 +60,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="relative px-3.5 py-2 text-sm font-medium text-textPrimary hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap after:absolute after:left-3.5 after:right-3.5 after:bottom-0.5 after:h-[2px] after:rounded-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-200"
+                className="relative px-3.5 py-2 text-sm font-medium text-textPrimary hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent whitespace-nowrap after:absolute after:left-3.5 after:right-3.5 after:bottom-0.5 after:h-[2px] after:rounded-full after:bg-accent after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-200"
               >
                 {item.label}
               </Link>
