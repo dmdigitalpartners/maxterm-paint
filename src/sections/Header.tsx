@@ -93,7 +93,7 @@ export function Header() {
             <a
               href={CONTACT.warehouse.phoneHref}
               aria-label={`Обади се на склада: ${CONTACT.warehouse.phone}`}
-              className="p-2 text-primary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="p-2.5 text-primary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <Phone size={22} aria-hidden="true" />
             </a>
@@ -103,7 +103,7 @@ export function Header() {
               aria-label="Отвори менюто"
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
-              className="p-2 text-textPrimary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="p-2.5 text-textPrimary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <Menu size={24} aria-hidden="true" />
             </button>
@@ -141,7 +141,7 @@ export function Header() {
             type="button"
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Затвори менюто"
-            className="p-2 text-textPrimary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="p-2.5 text-textPrimary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <X size={24} aria-hidden="true" />
           </button>

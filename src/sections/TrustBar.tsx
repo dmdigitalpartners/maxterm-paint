@@ -76,7 +76,7 @@ function StatCell({
     numericValue !== null ? String(count) : displayValue
 
   return (
-    <div className="flex flex-col items-center text-center gap-2 py-5 px-8">
+    <div className="flex flex-col items-center text-center gap-2 py-5 px-4 sm:px-8">
       <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
         <Icon size={18} className="text-accent" aria-hidden="true" />
       </div>

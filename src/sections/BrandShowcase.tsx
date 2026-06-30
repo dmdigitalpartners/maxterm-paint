@@ -6,7 +6,7 @@ const FEATURED_BRAND_NAMES = new Set([
 
 function FeaturedCard({ name, logo }: { name: string; logo: string }) {
   return (
-    <div className="bg-white rounded-2xl border border-border shadow-sm flex items-center justify-center min-h-[130px] px-6 py-8 hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white rounded-2xl border border-border shadow-sm flex items-center justify-center min-h-[130px] px-4 py-6 sm:px-6 sm:py-8 hover:shadow-md transition-shadow duration-200">
       <img
         src={logo}
         alt={name}

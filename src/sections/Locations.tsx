@@ -46,7 +46,7 @@ function LocationCard({
             <span>{location.address}</span>
           </div>
 
-          <div className="flex items-center gap-3 text-sm">
+          <div className="flex items-center gap-3 text-sm min-h-[36px]">
             <Phone size={16} className="text-accent shrink-0" aria-hidden="true" />
             <a
               href={location.phoneHref}

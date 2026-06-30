@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, ChevronDown } from 'lucide-react'
 import { BUSINESS, CONTACT, FOOTER } from '@/lib/content'
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
@@ -68,8 +68,9 @@ export function Footer() {
 
           {/* Column 2 — Warehouse */}
           <details className="group" open>
-            <summary className="lg:hidden list-none cursor-pointer">
+            <summary className="lg:hidden list-none cursor-pointer flex items-center justify-between">
               <FooterHeading>Складова База</FooterHeading>
+              <ChevronDown size={15} className="text-white/40 shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
             </summary>
             <div className="lg:block">
               <div className="hidden lg:block">
@@ -98,8 +99,9 @@ export function Footer() {
 
           {/* Column 3 — Store */}
           <details className="group" open>
-            <summary className="lg:hidden list-none cursor-pointer">
+            <summary className="lg:hidden list-none cursor-pointer flex items-center justify-between">
               <FooterHeading>Магазин MaxDecor</FooterHeading>
+              <ChevronDown size={15} className="text-white/40 shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
             </summary>
             <div className="lg:block">
               <div className="hidden lg:block">
@@ -146,12 +148,12 @@ export function Footer() {
           <div>
             <FooterHeading>Навигация</FooterHeading>
             <nav aria-label="Footer навигация">
-              <ul className="space-y-2.5">
+              <ul className="space-y-0">
                 {FOOTER.navItems.map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="text-sm text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
+                      className="block py-2 text-sm text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
                     >
                       {item.label}
                     </Link>
