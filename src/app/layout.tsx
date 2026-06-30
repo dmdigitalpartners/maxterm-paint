@@ -17,6 +17,14 @@ export const metadata: Metadata = {
     type: 'website',
   },
   appleWebApp: { title: 'Макстерм' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48', type: 'image/x-icon' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
