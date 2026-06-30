@@ -1,429 +1,496 @@
-# UX & Conversion Audit — maxterm.eu Homepage
-**Auditor:** Senior UX / CRO Specialist
-**Scope:** Homepage only — desktop + mobile
-**Reference:** business-intelligence-report.md (Phase 1 crawl)
+# Mobile UX Audit — maxterm-paint.vercel.app
+**Auditor:** Senior Mobile UX / Frontend QA Specialist
+**Target:** https://maxterm-paint.vercel.app/ (Vercel redesign preview)
+**Codebase:** Next.js 14 · Tailwind CSS · TypeScript
+**Viewport tested:** 375px (iPhone SE / baseline) · 390px (iPhone 14) · 430px (iPhone 14 Plus)
 **Date:** June 2026
 
 ---
 
 ## Executive Summary
 
-The Maxterm homepage fails at its single most important job: telling a first-time visitor who they are, what they sell, and what to do next — all within 5 seconds. The above-the-fold area is occupied entirely by a decorative image slider with no headline, no value proposition, and no call-to-action button. The page has zero trust signals (no testimonials, no reviews, no certifications, no years-in-business), zero conversion architecture (no phone in the header, no WhatsApp, no sticky CTA), and a broken Terms of Use link in the footer that signals abandonment. The site was last updated in 2021 and is built on a platform that defaults the browser tab title to "My Site" — a detail that singlehandedly undermines every paid or organic visit before the page even loads.
+The redesign is a strong foundation. Typography, colour system, accessibility markup, and component architecture are all well-executed. However, **three sections have critical mobile layout failures** that will make them unusable on any phone viewport:
 
-**Top 3 priorities:**
-1. Replace the hero slider with a conversion-focused headline + primary CTA (phone number + "Visit Us")
-2. Add a sticky header bar with phone numbers and WhatsApp — the primary conversion mechanism for Bulgarian SMB customers
-3. Insert a trust band (founded year, sq.m., brand logos, staff claim) directly below the hero
+1. The **Reviews carousel** shows 3 cards simultaneously on mobile, collapsing each card to ~94px wide — completely unreadable.
+2. The **Why Us** section renders a 2-column grid with very long copy in cells that are only ~100px wide on a 375px phone.
+3. The **Prev/Next carousel buttons** extend outside the viewport boundary on small screens.
 
----
-
-## Critical Issues (HIGH Severity)
+Fixing these three issues should be the immediate priority before any public launch. All remaining issues are medium or minor polish items.
 
 ---
 
-### ISSUE H-01 — No Value Proposition Above the Fold
-- **Location:** Hero section (ATF, 100vh)
-- **Current situation:** Three rotating slides show product photography (XPS insulation boards, Benjamin Moore lifestyle, paint cans). No headline. No subheadline. No text overlay of any kind. A visitor cannot tell within 5 seconds what this business does, who it serves, or why they should stay.
-- **Conversion impact:** Studies consistently show 80%+ of visitors decide to stay or leave within 3–5 seconds. Without a clear value proposition, the bounce rate on cold traffic (Google, Facebook ads, referrals) will be catastrophically high. The site currently competes on brand name recognition alone — which it hasn't built.
-- **Severity:** HIGH
-- **Recommended fix:**
-  Replace the full-bleed slider with a single static hero section containing:
-  - **H1 headline:** "Строителни Материали, Бои и Паркет в Пловдив" (Building Materials, Paints and Flooring in Plovdiv)
-  - **Subheadline:** "Официален представител на Benjamin Moore, PPG, Vitex, Baumit и още 20+ марки. Два търговски обекта. Доставка с наш транспорт."
-  - **Primary CTA button:** "Обади се сега — 0876 032868" (tel: link)
-  - **Secondary CTA:** "Вижте продуктите →"
-  - Background: single high-quality hero image of the store interior or product display, not a slider.
-- **Business impact:** A clear ATF value prop can reduce bounce rate by 30–50% and directly increase the volume of phone calls and store visits — the two primary conversion goals for this business.
+## Section-by-Section Audit
 
 ---
 
-### ISSUE H-02 — Zero CTA Above the Fold
-- **Location:** Hero section, entire viewport on load
-- **Current situation:** The hero contains no buttons, no phone number link, no "Visit us," no "View products" — nothing actionable. The first clickable element a visitor sees is the navigation menu. The first content CTA on the page is "ОЧАКВАМЕ ВИ!" (We Expect You!) which is styled as bold text, not a button, and is not hyperlinked.
-- **Conversion impact:** Without a CTA above the fold, visitors with high intent (e.g., someone who searched "бои Пловдив" and landed here) have no immediate action to take. They must scroll, orient themselves, read content blocks, and then decide to hunt for contact info. Every added step bleeds conversion. "ОЧАКВАМЕ ВИ!" is a welcome phrase, not a directive.
-- **Severity:** HIGH
-- **Recommended fix:**
-  - Add a large primary button in the hero: phone number as a tap-to-call link, styled as a button (min 48px height, high-contrast background — e.g., deep blue or brand orange on white)
-  - Add a secondary text link: "Разгледай продуктите →" pointing to /paints or a new category page
-  - Add a persistent WhatsApp/Viber floating button (bottom-right corner, always visible)
-- **Business impact:** Phone calls and in-store visits are this business's only conversion events. Making the phone number a button above the fold can 2–5× the call volume from website visitors on mobile.
+### 1 — Header + Mobile Menu
+
+**Component:** `src/sections/Header.tsx`
+
+#### Layout
+- Mobile header height `h-[72px]` is correct and appropriate.
+- Mobile shows: logo (left) · phone icon (centre-right) · hamburger (far right). Clean and minimal.
+- Mobile menu slides in from the right at `w-[85vw] max-w-sm` — good width, does not fully occlude the backdrop.
+
+#### Touch Targets
+- Phone icon in header: `p-2` padding + `size={22}` icon = effective tap area ≈ **38×38px** — 6px below the 44px minimum.
+- Hamburger button: `p-2` + `size={24}` = **40×40px** — also slightly below minimum.
+- Menu close (X) button: same `p-2` — **40×40px**.
+- Menu nav links: `py-3` ≈ 44px height — ✓ acceptable.
+- Phone CTA buttons inside the menu: `py-3.5 w-full` ≈ **56px** — ✓ excellent.
+
+#### Interaction
+- Body scroll is locked when menu is open — ✓ correct.
+- Backdrop click closes the menu — ✓ correct.
+- No swipe-to-close gesture for the slide-in panel (not critical but a polish improvement).
+- Only the **warehouse** phone number is shown as an icon in the header on mobile. The **store phone is only accessible after opening the menu**. Many users may miss this.
+
+#### Content
+- The menu bottom section clearly labels both phone numbers with location context (Склад / Магазин MaxDecor) — ✓ well done.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟠 Medium | Phone icon touch target too small | `p-2` gives 38–40px; change to `p-2.5` or `p-3` to reach 44px |
+| 🟠 Medium | Only warehouse phone visible without opening menu | Store phone is hidden behind 2 taps; consider adding second phone link to mobile header area or making it visible in another way |
 
 ---
 
-### ISSUE H-03 — Browser / Page Title is "My Site"
-- **Location:** `<title>` tag / browser tab / search engine snippet
-- **Current situation:** The HTML `<title>` element reads "Начало - My Site". This is the default placeholder from the Super Website platform that was never updated. It appears in: (a) the browser tab, (b) Google search result titles, (c) social share previews, (d) bookmark labels. The og:title meta tag is also "Начало - My Site."
-- **Conversion impact:** This is a credibility-destroying signal visible at multiple touchpoints before a visitor even reaches the homepage. In Google search results, seeing "My Site" instead of "Макстерм | Бои, Паркет и Строителни Материали в Пловдив" makes the listing look like a mistake or a test site. It directly suppresses click-through rate from organic search. It also signals to any technical-savvy user that this business does not actively manage its web presence.
-- **Severity:** HIGH
-- **Recommended fix:**
-  - Change the `<title>` to: "Макстерм | Бои, Паркет и Строителни Материали — Пловдив"
-  - Update `og:title`, `twitter:title` to match
-  - This is a single setting change in the Super Website admin — highest ROI fix on the entire site
-- **Business impact:** Better CTR from Google search = more free traffic. Improved credibility = lower bounce rate from cold visitors.
+### 2 — Hero
+
+**Component:** `src/sections/Hero.tsx`
+
+#### Layout
+- Height `calc(100svh - 180px)` with `min-h-[400px]`: the 180px subtraction is ~108px larger than the actual header (`h-[72px]`). On a 667px iPhone SE this yields a 487px hero — adequate. On an 844px iPhone 14: 664px — fine. The over-subtraction wastes some vertical space but doesn't break layout.
+- Content uses `px-8` (32px) horizontal padding — inconsistent with `px-6` (24px) used by every other section. On a 375px phone this leaves 311px for content — enough, but creates a subtle visual misalignment when scrolling past other sections.
+
+#### Typography
+- Headline `text-4xl` (36px) on mobile — good size for impact.
+- Headline has a forced `<br />` — always 2 lines on all viewports — appropriate.
+- Subheadline at `text-base` (16px) with `max-w-[600px] mx-auto` — on mobile the max-width has no effect (phone is narrower); copy fits well within the constrained width.
+
+#### CTAs
+- Both buttons stack vertically on mobile (`flex-col`) — ✓ correct.
+- Both are `w-full` — ✓ full-width touch targets.
+- The outline (catalog) CTA label: **"Разгледайте нашия каталог"** (29 chars). At full width with internal padding this fits fine, but is long for a secondary CTA. A tighter label would reduce cognitive load.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟢 Minor | `px-8` inconsistent with rest of site | All other sections use `px-6`; hero uses `px-8`. Unify to `px-6` |
+| 🟢 Minor | Hero height subtraction overshoots | `calc(100svh-180px)` subtracts 108px more than actual header height; consider `calc(100svh-72px)` or just `100svh` with sticky header |
+| 🟢 Minor | Catalog CTA label slightly long | "Разгледайте нашия каталог" → consider shortening to "Разгледай каталога" |
 
 ---
 
-### ISSUE H-04 — No Phone Number in Header
-- **Location:** Site header (top bar / navigation area)
-- **Current situation:** The header contains only the navigation menu (7 text links). No phone number, no email, no "Contact us," no CTA of any kind is present in the header. Phone numbers only appear on the /kontakti page.
-- **Conversion impact:** Bulgarian SMB customers — especially those on mobile searching for local building materials — expect to find a phone number immediately, often before they even read any content. Hiding contact info behind a navigation click adds a full extra step and eliminates all impulsive call conversions. This is the single highest-intent action a local customer takes.
-- **Severity:** HIGH
-- **Recommended fix:**
-  - Add a top utility bar above the main nav with:
-    - 📞 Склад: 0876 032868 (tap-to-call)
-    - 📞 Магазин: 0893 305306 (tap-to-call)
-    - WhatsApp/Viber icon linking to wa.me or viber:// protocol
-    - Working hours summary: "Пон–Пет: 8:30–17:30 | Маг: 9:00–19:00"
-  - On mobile: collapse to a single prominent call button in the header
-- **Business impact:** Phone numbers in headers are consistently among the highest-converting elements on local business websites. This fix alone can double inbound call volume.
+### 3 — Trust Bar
+
+**Component:** `src/sections/TrustBar.tsx`
+
+#### Layout
+- Mobile grid: `grid-cols-2` → 4 items display as a 2×2 grid. Structure is logical.
+- `divide-y` applies horizontal dividers between rows — ✓ correct.
+- No vertical dividers in the 2-column mobile layout; cells are separated only by whitespace.
+
+#### Spacing
+- Each `StatCell` uses `px-8` (32px each side) internal padding.
+- On a 375px phone: section has `px-6` (24px each side) → grid width = 327px → each cell = ~163px → content area per cell = 163 - 64 = **~99px**.
+- "Собствен" (stat value, `text-2xl font-bold`) ≈ 96px — fits just barely. For cells with shorter values (2010, 16+, 22), no issue.
+- The `text-[10px] font-semibold uppercase tracking-widest` label (e.g., "Година основаване", "Водещи марки") — at 10px with wide tracking on a 99px content column, "Година основаване" = 18 chars will likely wrap to 2 lines. This is awkward.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟠 Medium | `px-8` too wide for 2-col mobile cells | Reduce StatCell padding to `px-4` on mobile: `px-4 lg:px-8`. Labels like "Година основаване" currently wrap at 99px content width |
+| 🟢 Minor | No vertical divider between same-row cells on mobile | Consider adding `divide-x` logic or a subtle border between columns to visually separate the 2×2 grid |
 
 ---
 
-### ISSUE H-05 — No Trust Signals Anywhere on Homepage
-- **Location:** Entire homepage
-- **Current situation:** The homepage contains zero trust signals. No testimonials. No Google Reviews badge. No star rating. No "Founded 2010" or "15 years of experience." No brand logos. No statistics (clients served, products in stock, sq.m.). No certifications. The only credibility attempt is mentioning brand names in body text.
-- **Conversion impact:** Building material purchases — even small ones — require trust. Homeowners and contractors are making decisions about products they'll live with for years. A site with no social proof loses to any competitor who has even one Google review visible. The absence of trust signals is especially damaging to cold traffic (first-time visitors via search or ads).
-- **Severity:** HIGH
-- **Recommended fix:**
-  Add a trust band section directly below the hero containing 4–5 horizontal trust indicators:
-  - ✅ "Основана 2010 г." (Founded 2010)
-  - ✅ "2000 кв.м. складова база" (2,000 sqm warehouse)
-  - ✅ "20+ водещи марки" (20+ leading brands)
-  - ✅ "Собствен транспорт" (Own delivery transport)
-  - ✅ Google Reviews widget or star rating (requires adding Google Business reviews first)
-  - Brand logo strip: Benjamin Moore, PPG, Vitex, Baumit, Mapei, Kronopol, Swiss Krono logos
-- **Business impact:** Trust signals reduce bounce rate, increase time-on-site, and directly increase contact form submissions and phone calls. Brand logo strips in particular create instant authority for multi-brand retailers.
+### 4 — Categories (Bento Grid)
+
+**Component:** `src/sections/Categories.tsx`
+
+#### Layout
+- Mobile (`<640px`): single column, all cards `h-64` (256px tall) — clean and readable.
+- `sm:` (640–1023px): 2 columns, cards `h-72` (288px) — good.
+- The featured bento layout (asymmetric spans) only activates at `lg:` — on mobile all cards are visually equal height. This is expected and not a problem.
+
+#### Cards
+- Text anchored to bottom with gradient overlay — ✓ legible at all sizes.
+- Featured card description: `line-clamp-3` + `max-w-[340px]` — on mobile the max-width has no effect (card is narrower); clamp works correctly.
+- Regular card description: `line-clamp-2` — ✓ good density for card format.
+- "Разгледай →" affordance is clearly visible — ✓.
+
+#### Performance
+- `sizes` attribute correctly specifies `100vw` for mobile — ✓ correct image loading.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟢 Minor | All 4 cards have identical height on mobile (256px) | The bento visual hierarchy is lost on mobile. Not a usability issue, but consider setting the featured card to `h-72` or `h-80` on mobile to maintain visual emphasis |
 
 ---
 
-### ISSUE H-06 — Broken Footer Link (Terms of Use → 404)
-- **Location:** Footer, "Общи условия за ползване на уебсайта" link
-- **Current situation:** The footer contains a link to /obshti-usloviq (Terms of Use) on every single page of the site. This link returns a 404 error. Every page on the site serves a broken link in the footer.
-- **Conversion impact:** Broken links signal website abandonment and technical neglect. Any visitor who clicks it (especially cautious B2B buyers or contractors checking legitimacy) receives a 404 page. It also has minor negative SEO implications.
-- **Severity:** HIGH
-- **Recommended fix:**
-  Either: (a) create the Terms of Use page at /obshti-usloviq with standard Bulgarian e-commerce terms, or (b) remove the link entirely from the footer until the page exists.
-- **Business impact:** Removing this trust-killer is a one-minute fix that eliminates a negative credibility signal visible on every page.
+### 5 — Brand Showcase
+
+**Component:** `src/sections/BrandShowcase.tsx`
+
+#### Featured Grid
+- Mobile: `grid-cols-2 gap-4` → 6 brands in 3 rows of 2.
+- Card dimensions at 375px: section `px-6` = 327px grid → each cell = (327 - 16px gap) / 2 = **~155px wide**.
+- Card internal padding: `px-6 py-8` (24px each side) → **~107px usable for logo**.
+- `max-h-16` (64px) logo height with `max-w-full object-contain` — logos fit within the 107px constraint, but horizontal logos (Benjamin Moore, Swiss Krono) will be very compressed.
+- `min-h-[130px]` card height — fine.
+
+#### Marquee Strip
+- The `max-w-[900px] mx-auto overflow-hidden` marquee container: on mobile it is full-viewport width. 
+- Animation pause on hover (`animate-marquee:hover { animation-play-state: paused }`) — **does not work on touch devices**. Users cannot pause the marquee by tapping it.
+- Fade edges `w-10` (40px) on a 375px screen = 10.7% of width masked — slightly aggressive at mobile sizes.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟠 Medium | Logo cards too narrow on mobile — some logos may be compressed | 107px usable logo space may be insufficient for wide-format logos. Consider reducing `px-6` to `px-4` on FeaturedCard for mobile, or switching to `grid-cols-3` at mobile for a 3-row layout with more horizontal space per card |
+| 🟢 Minor | Marquee has no touch-pause mechanism | `hover:` pause is desktop-only. Not critical but consider adding `aria-label` noting the logos are scrolling, or a static fallback below the marquee |
 
 ---
 
-### ISSUE H-07 — Dual Brand Identity Confusion (Maxterm vs. MaxDecor)
-- **Location:** Homepage body copy, navigation, page title
-- **Current situation:** The homepage introduces two different brand names — "МАКСТЕРМ" (the company/warehouse) and "МАКСДЕКОР / MAXDECOR" (the retail store). The Facebook link goes to facebook.com/maxdecor.bg. The domain is maxterm.eu. The page title says "My Site." A first-time visitor has no clear understanding of which brand they are dealing with or what the relationship between the two names is.
-- **Conversion impact:** Brand confusion creates cognitive friction. Visitors who search "Maxterm Plovdiv" and land on a page that prominently also says "MaxDecor" and links to a Facebook called MaxDecor may question whether they are in the right place. This is especially damaging for repeat customers trying to find the business online.
-- **Severity:** HIGH
-- **Recommended fix:**
-  - Choose a primary brand name for the website and use it consistently. Recommendation: "Макстерм" as the umbrella brand (it owns the domain), with "Магазин MaxDecor" as a named sub-location.
-  - Add a clear brand statement: "Макстерм ООД — два обекта в Пловдив: Складова База и Магазин MaxDecor"
-  - Ensure the site header logo/name, page title, and Facebook all align
-- **Business impact:** Brand clarity reduces confusion, increases trust, and improves brand recall — all of which affect return visits and word-of-mouth referrals.
+### 6 — Locations
+
+**Component:** `src/sections/Locations.tsx`
+
+#### Layout
+- Single-column stacked cards on mobile — ✓ correct.
+- Store displayed first on mobile (`order-1`) — ✓ correct priority for most users.
+- Each card: full-width, `aspect-video` photo (~184px tall at 375px), card body `p-6`.
+
+#### Touch Targets
+- "Обади се" button: `min-h-[48px] w-full` — ✓ excellent.
+- "Виж на картата" button: `min-h-[48px] flex-1` — ✓ excellent.
+- Inline phone link (`<a>` inside the info row): **no min-height**, renders as text-height only (~20px touch target). Below minimum.
+- CTA buttons stack vertically on mobile (`flex-col sm:flex-row`) — ✓ correct.
+
+#### Content Density
+- Each card contains: photo, badge, name, address, phone, hours (3 lines), highlight, product list, 2 CTAs. This is a lot of information for a mobile card.
+- `location.products` field ("XPS · EPS · Baumit · Mapei · Technogips Pro") at `text-xs text-muted` is supplementary detail that adds density without adding decision-making value on mobile.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟠 Medium | Inline phone link touch target too small | The `<a>` phone link in the info row is text-only (~20px tall). Wrap it in a `py-1.5` or add `min-h-[36px] flex items-center` to the row |
+| 🟢 Minor | Product tag line adds density without value on mobile | `location.products` at `text-xs` is supplementary info; consider `hidden lg:block` if card length is a concern |
+| 🟢 Minor | Two buttons of equal visual weight stacked — hierarchy unclear | "Обади се" (primary action) and "Виж на картата" (secondary) could be differentiated more clearly |
 
 ---
 
-### ISSUE H-08 — Hero Slider is an Active Conversion Killer
-- **Location:** Hero section (ATF, full viewport)
-- **Current situation:** The homepage uses a rotating image carousel with 3 slides (insulation, Benjamin Moore, paint cans). There are no text overlays, no CTAs on the slides, and no visible slide indicators or navigation arrows in the extracted markup. The slider auto-rotates.
-- **Conversion impact:** Auto-rotating hero sliders are one of the most researched and consistently damaging patterns in CRO. Known issues: (1) users cannot read or process text before the slide changes, (2) they create "banner blindness" — visitors instinctively ignore carousels as advertising noise, (3) they delay the Largest Contentful Paint (LCP) metric, harming Core Web Vitals and Google ranking, (4) on mobile they often break or display awkwardly. Specifically for this site: since the slides have no text or CTAs at all, the entire hero delivers zero informational value — it is purely decorative.
-- **Severity:** HIGH
-- **Recommended fix:**
-  Replace with a single static hero image (high-quality photo of the store, product display, or a styled paint/materials flat lay) with a text overlay containing H1 + subheadline + 2 CTAs as described in H-01. If a slideshow feel is desired, use a subtle CSS parallax or a background video at very low opacity — never a content carousel.
-- **Business impact:** Replacing a carousel with a static hero with clear messaging is consistently documented to increase engagement metrics by 20–40% and CTA click-through by 2–3×.
+### 7 — Why Us
+
+**Component:** `src/sections/WhyUs.tsx`
+
+#### Layout — CRITICAL
+- Mobile grid: `grid-cols-2` → 4 items in a 2×2 layout.
+- Cell width at 375px: section `px-6` = 327px → each column = 327/2 = **~163px**.
+- Each cell uses `px-8` (32px each side) padding → **content area ≈ 99px**.
+- At 99px width, the cell must render:
+  - A 64×64px icon circle (wider than 99px → **the icon itself overflows its container!**)
+  - `text-lg font-bold` title — e.g., "Правилният продукт за вашия проект" = 38 chars → wraps into ~6 lines at 99px
+  - `text-sm` description — e.g., "16 години работа с обекти в Пловдив..." = 127 chars → wraps into ~10 lines at 99px
+
+This means each cell becomes very tall (potentially 400px+ per cell) with dense wrapped text, creating an extremely cramped and unreadable dark-background section.
+
+#### Section Heading
+- Title joins two parts: "Правилен материал, честен съвет" + " " + "и доставка директно до вашия обект" → the `<br className="hidden lg:block" />` means mobile renders this as one long line: **"Правилен материал, честен съвет и доставка директно до вашия обект"** at `text-2xl`. At 375px with `px-6` padding = 327px content width, this wraps to ~3 lines — acceptable but dense.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🔴 Critical | `grid-cols-2` with `px-8` creates ~99px content cells — too narrow for the content | The 64px icon + long titles + long descriptions cannot fit in a 99px-wide cell. Switch to `grid-cols-1` on mobile: remove `grid-cols-2` (make it just `lg:grid-cols-[...]`). This gives each feature cell its own row with full content width |
+| 🔴 Critical | Description copy too long for 2-column mobile display | Even reducing padding, 127-char descriptions in 2-col dark-bg layout will be hard to read. A `grid-cols-1` layout resolves this issue entirely |
+| 🟠 Medium | Section heading is one long concatenated line on mobile | Add a dedicated `<br className="sm:hidden" />` or rephrase to a 2-line mobile heading. Current line: ~66 chars at text-2xl wraps to 3 lines |
 
 ---
 
-## Medium Issues
+### 8 — Social Proof (Reviews Carousel)
+
+**Component:** `src/sections/SocialProof.tsx`
+
+#### Layout — CRITICAL
+- `VISIBLE = 3` is hardcoded. The carousel always shows 3 cards simultaneously — there is no responsive adjustment for mobile.
+- On a 375px phone (section `px-4`, container = 343px): each of the 3 visible cards = **343/3 ≈ 114px wide**.
+- Subtracting `px-2.5` (10px each side) inter-card padding → **card content width = 94px**.
+- Each `ReviewCard` has internal `p-6` (24px padding) → **usable text area = 46px wide**.
+- At 46px, **no text is readable**. Stars, reviewer name, review text, and location all overflow into unreadable lines.
+
+#### Buttons
+- Prev/Next buttons: `w-10 h-10`, positioned with `-translate-x-5` (left) / `translate-x-5` (right), which offsets them **20px outside** the carousel container.
+- Container has `px-4` (16px) section padding — the left button extends `-20px` from the container edge, which is **4px outside the viewport** at 375px.
+- The buttons are `z-10` and `absolute` — they may be clipped by the `overflow-hidden` carousel wrapper.
+
+#### Interaction
+- No swipe/drag gesture support. Mobile users instinctively swipe carousels.
+- Buttons are the only navigation mechanism — on mobile they may be clipped or invisible (see above).
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🔴 Critical | 3 visible cards on mobile creates ~94px-wide unreadable cards | Show 1 card on mobile, 2 on `sm:`, 3 on `lg:`. Implement `VISIBLE` as responsive (or via CSS width trick): at mobile, set each card to `100%` width and adjust translateX math accordingly |
+| 🔴 Critical | Prev/Next buttons extend outside viewport on mobile | The `-translate-x-5` offset pushes the left button partially off-screen. On mobile, move buttons to below the carousel as inline prev/next controls, or change positioning |
+| 🟠 Medium | No swipe support | Mobile users expect swipe navigation. Add `touchstart`/`touchend` handlers to detect swipe direction and call `move()` |
 
 ---
 
-### ISSUE M-01 — Navigation Has No Visual Hierarchy or Grouping
-- **Location:** Primary navigation (7 items, flat)
-- **Current situation:** Nav items: Начало | Интериорни и Фасадни Бои | Ламиниран Паркет | Строителни Материали | Лайсни и Первази | Промоции | Контакти. All items are equal weight, same styling. No dropdowns. No visual grouping. "Промоции" is listed between product categories and contact, which is unusual. "Контакти" is last with no visual emphasis.
-- **Conversion impact:** A visitor looking for "tile adhesives" or "Baumit" has no way to know where to look from the nav. They must guess whether it falls under "Строителни Материали" or somewhere else. No dropdown means 2–3 extra clicks to find sub-categories. "Контакти" being the last un-emphasized item buries the most conversion-critical page.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  - Add dropdown mega-menus or hover-reveals for the 3 product categories:
-    - "Бои" → Benjamin Moore / PPG / Vitex / Colorstyle / Декоративни мазилки / Грундове
-    - "Паркет" → Kronopol / Swiss Krono / Tarkett / Classen (etc.)
-    - "Строителни Материали" → XPS/EPS / Baumit / Гипскартон / Хидроизолации (etc.)
-  - Style "Контакти" as a button (filled/outlined) to make it visually distinct as a CTA
-  - Move "Промоции" adjacent to contact or highlight it differently (badge/tag: "Актуално!")
-- **Business impact:** Clearer navigation reduces the effort required to find products, directly increasing product page views and time on site — both of which correlate with conversion.
+### 9 — Final CTA
+
+**Component:** `src/sections/FinalCTA.tsx`
+
+#### Layout
+- `py-20 lg:py-28` — 80px vertical padding on mobile. Proportionate and readable.
+- Both CTA buttons: `w-full sm:w-auto` stacked vertically on mobile — ✓ correct.
+- Both buttons: `min-h-[52px]` — ✓ excellent touch targets.
+
+#### Content
+- Button labels include phone numbers: "Склад: 0876 032868" and "Магазин: 0893 305306". Both fit within full-width buttons at `text-base`.
+- `hoursNote`: "Пон–Пет: Склад 8:30–17:30 | Магазин 9:00–19:00" = 48 chars at `text-sm`. At 327px content width this fits in ~2 lines — acceptable. The pipe separator `|` may cause visual ambiguity on wrap.
+- Two phone-call buttons visible simultaneously. On mobile, after scrolling through 10 sections, this is the right moment for both — the duplication serves a purpose here.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟢 Minor | `hoursNote` pipe separator may cause awkward wrap | If the 48-char string wraps, the `|` separator becomes meaningless mid-line. Consider using a bullet `·` or new line instead: `Склад 8:30–17:30 · Магазин 9:00–19:00` |
 
 ---
 
-### ISSUE M-02 — Two-Location Section Buries the Most Useful Information
-- **Location:** Warehouse block + Store block (below hero)
-- **Current situation:** The two location blocks describe each location in flowing prose. Key info (address, hours, phone) is embedded in paragraph text, not scannable. There are no maps, no hours in this section (hours are only on /kontakti), and no direct phone tap links. The warehouse block comes before the store block, even though the store (MaxDecor) is likely more relevant to the majority of homeowner visitors.
-- **Conversion impact:** When someone wants to visit a physical store, they need: address, hours, and a map — immediately scannable. Burying this in prose increases the likelihood they leave to find the info on Google Maps instead. And they may not come back.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  Replace the two prose blocks with two structured location cards, side by side on desktop / stacked on mobile. Each card: Name, Address (with Google Maps link), Phone (tap-to-call link), Hours summary, "Виж на картата" (View on Map) button linking to Google Maps. Consider swapping order — store first (retail-first audience), warehouse second.
-- **Business impact:** Structured, scannable location info directly increases in-store visits by reducing friction in the "how do I get there" decision.
+### 10 — Footer
+
+**Component:** `src/sections/Footer.tsx`
+
+#### Layout
+- Mobile: single column, all 4 sections stack — ✓ correct.
+- `<details open>` accordion for warehouse and store info columns — open by default.
+
+#### Interaction Issue
+- `<summary>` elements have `list-none cursor-pointer` but no visible affordance (no chevron, no + / - icon). They **look like static headings** but are actually interactive collapse controls.
+- Because `open` is a static HTML attribute (not React state), the browser handles expand/collapse natively — clicking the summary will collapse the section, but users don't know this is possible.
+- There is no chevron or icon indicating interactivity.
+
+#### Touch Targets
+- Footer nav links (`ul > li > Link`): `space-y-2.5` (10px gap) between items, each link is text-height only (~20px). **Touch target ≈ 20px** — far below the 44px minimum.
+- Footer phone links (inside `<a>` in IconRow): same issue — text-height only.
+
+#### Content
+- Logo in footer: `h-14` (56px) — good size.
+- Brand description: `max-w-[220px]` — on single-column mobile layout this constrains text width unnecessarily (shows at less than full card width even on mobile). Should likely be `max-w-sm` or `max-w-full`.
+- Email addresses in store column: `space-y-0.5` (2px gap) — extremely tight for interactive links.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟠 Medium | `<details>` summary has no visual collapse affordance | Add a chevron icon to `<summary>` on mobile (e.g., `ChevronDown` from lucide, rotated when open via `group-open:rotate-180`) so users understand the sections are collapsible |
+| 🟠 Medium | Footer nav link touch targets are too small (~20px) | Add `py-2` to each `<li>` or each `<Link>` in footer nav to bring touch targets closer to 36–44px |
+| 🟠 Medium | Footer phone/email links are text-height only | Wrap IconRow links in a `flex items-center min-h-[36px]` to increase tap surface |
+| 🟢 Minor | `max-w-[220px]` clips brand description unnecessarily on mobile | Change to `max-w-xs` or remove the constraint on mobile |
+| 🟢 Minor | Email addresses `space-y-0.5` creates 2px gap — too tight to tap | Increase to `space-y-1.5` or `space-y-2` |
 
 ---
 
-### ISSUE M-03 — Copyright Says 2021 (Signals Abandonment)
-- **Location:** Footer, all pages
-- **Current situation:** Footer displays "Copyright © 2021 Всички права запазени за SuperHosting.BG"
-- **Conversion impact:** A year-old (or older) copyright date is a trust signal in reverse. It tells visitors the site has not been updated in years — which raises questions about whether the business is still active, whether products are current, and whether contact info is still valid. This matters especially for B2B buyers doing due diligence.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  Update copyright to current year, or use a dynamic script: `© 2010–2026 Макстерм ООД`. Also note: "SuperHosting.BG" should not appear in the copyright of a client's website — this advertises the hosting company at the client's expense.
-- **Business impact:** Small fix, meaningful trust signal.
+### 11 — Floating Viber Button
+
+**Component:** `src/components/ViberButton.tsx`
+
+#### Positioning
+- `fixed bottom-8 right-8` = 32px from bottom and right edges.
+- Modern iPhones (X and later) have a **home indicator bar** at the bottom consuming approximately 34px of physical space. The `bottom-8` (32px) does not use `env(safe-area-inset-bottom)`, which means the Viber button sits **directly behind or touching the home swipe gesture area**.
+- The button is `w-16 h-16` (64px) — good size for a touch target.
+
+#### Overlap
+- No z-index conflict with FinalCTA section (which is `relative`), but the floating button visually overlays page content at all scroll positions, including over text near the right edge.
+
+**Issues found:**
+
+| Priority | Issue | Detail |
+|----------|-------|--------|
+| 🟠 Medium | No safe-area-inset-bottom compensation | Change `bottom-8` to use CSS: `bottom: calc(2rem + env(safe-area-inset-bottom))` via inline style, or add a Tailwind `pb-safe` plugin. Prevents conflict with iPhone home indicator |
 
 ---
 
-### ISSUE M-04 — No Google Maps Embed on Homepage
-- **Location:** Location blocks (below hero)
-- **Current situation:** Addresses are mentioned in text. No embedded map. No "Get Directions" link. No static map image.
-- **Conversion impact:** The primary intent for a high percentage of local search visitors is "where are you located, can I visit?" An embedded map immediately satisfies that intent on the homepage — without requiring a click to the contact page.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  Embed a Google Maps iFrame for each location within the respective location card (see M-02). Alternatively, a static map image linking to Google Maps is acceptable and faster to load.
-- **Business impact:** Reduces friction in the store-visit decision. Maps also improve local SEO signals.
+## Copy & Content Density Review
+
+| Section | Issue | Suggestion |
+|---------|-------|------------|
+| WhyUs descriptions | Each description is 100–130 chars, displayed in a 2-col narrow grid on mobile (~99px content width) | Move to `grid-cols-1` mobile layout (see Critical finding above). No copy changes needed — the copy itself is good, the layout is the problem |
+| Hero subheadline | "Официален представител на Benjamin Moore, PPG, Baumit, Mapei и над 20 водещи марки. Два обекта в Пловдив с наш транспорт." — 2 sentences, fine for mobile | No change needed |
+| FinalCTA hoursNote | "Пон–Пет: Склад 8:30–17:30 | Магазин 9:00–19:00" — single-line intent, wraps awkwardly | Change `|` to `·` separator |
+| Categories descriptions | Long descriptions are correctly clamp-limited (2–3 lines) — well handled | No change needed |
+| Social Proof reviews | Review text is `line-clamp-5` — once carousel is fixed to 1 card per mobile view, the full card width will be comfortable | No change needed (dependent on carousel fix) |
 
 ---
 
-### ISSUE M-05 — No WhatsApp / Viber Contact Option
-- **Location:** Homepage, contact section, footer
-- **Current situation:** The only contact methods visible on the homepage are embedded in prose text (not even clickable links). WhatsApp and Viber — the dominant asynchronous communication channels in Bulgarian consumer markets — are entirely absent from the site.
-- **Conversion impact:** A significant portion of Bulgarian mobile users prefer sending a Viber or WhatsApp message over calling. The absence of these channels means the site loses all visitors who want to contact the business outside working hours, want to send a photo of a product, or simply prefer messaging to calling.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  - Add a floating WhatsApp/Viber button (bottom-right corner, persistent across the entire site)
-  - Include Viber and WhatsApp icons in the header utility bar alongside phone numbers
-  - Add to the contact section on homepage
-- **Business impact:** Adding messaging channels consistently increases total inbound contact volume by 30–60% for local Bulgarian businesses, particularly from mobile users aged 25–45 (the core home renovation demographic).
+## Interaction & UI Issues Summary
+
+| # | Issue | Component | Priority |
+|---|-------|-----------|----------|
+| 1 | 3-card carousel unreadable on mobile — no responsive `VISIBLE` count | SocialProof.tsx | 🔴 Critical |
+| 2 | Carousel prev/next buttons clip off viewport left edge | SocialProof.tsx | 🔴 Critical |
+| 3 | `grid-cols-2` with `px-8` creates unusable 99px cells on mobile | WhyUs.tsx | 🔴 Critical |
+| 4 | No swipe support on carousel | SocialProof.tsx | 🟠 Medium |
+| 5 | Marquee cannot be paused on touch (hover-only) | BrandShowcase.tsx | 🟢 Minor |
+| 6 | Only warehouse phone visible in mobile header without opening menu | Header.tsx | 🟠 Medium |
+| 7 | Footer `<details>` collapse has no visual affordance | Footer.tsx | 🟠 Medium |
+| 8 | ViberButton ignores iPhone safe-area-inset-bottom | ViberButton.tsx | 🟠 Medium |
 
 ---
 
-### ISSUE M-06 — Product Categories Not Visible on Homepage
-- **Location:** Homepage body, below location blocks
-- **Current situation:** The homepage does not show any product category cards, product images, or any visual representation of what is sold (beyond the hero slider which has no labels). A visitor must click into the navigation to discover the product range. There is no "Browse by category" section, no featured products, no brand showcase grid.
-- **Conversion impact:** Most e-commerce and local product sites achieve significantly higher engagement when the homepage presents a visual product/category grid. It allows visitors to immediately scan and self-select their area of interest (paint vs. flooring vs. insulation), which dramatically reduces bounce rates for mid-funnel visitors.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  Add a "Нашите Продукти" (Our Products) section with 3–4 category cards below the trust band:
-  - 🎨 Бои и Мазилки → /paints
-  - 🪵 Ламиниран Паркет → /laminatefloor
-  - 🏗️ Строителни Материали → /строителни-материали-xps
-  - 🔧 Лайсни и Першали → /europrofil
-  Each card: icon or category image, category name, 1-line description, CTA arrow.
-- **Business impact:** Category cards on the homepage increase product page clicks by 40–80% and reduce time-to-first-product-view, directly supporting conversion.
+## Prioritised Optimisation Plan
+
+> **Important:** All items below are suggestions for approval — no code has been changed.
 
 ---
 
-### ISSUE M-07 — No Instagram / TikTok Social Link Despite Visual Product Category
-- **Location:** Footer, header area
-- **Current situation:** The only social link is Facebook (facebook.com/maxdecor.bg). No Instagram, no TikTok, no YouTube. The BI report confirmed these are absent.
-- **Conversion impact:** Paint, decor, and flooring are inherently visual product categories — among the highest-performing on Instagram and TikTok. Customers researching interior finishes heavily use Instagram for inspiration and product validation. A business without a visible Instagram link in 2026 appears behind the curve.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  - If Instagram/TikTok accounts exist but aren't linked: add them immediately to the footer and header utility bar
-  - If they don't exist: creating an Instagram profile and embedding a feed widget on the homepage (showing color swatches, installations, product arrivals) would add significant trust and engagement value
-- **Business impact:** Social links add to perceived legitimacy and create additional touchpoints for undecided customers to validate the business before visiting.
+### 🔴 Critical — Fix before any public launch
+
+#### C1 — Reviews carousel: show 1 card on mobile, not 3
+
+**File:** `src/sections/SocialProof.tsx`
+
+Change `VISIBLE` from a constant `3` to a responsive value detected on mount (or use CSS). The simplest approach:
+
+- On mobile (`< 640px`): `VISIBLE = 1`, each card = 100% container width
+- On `sm:` (640–1023px): `VISIBLE = 2`
+- On `lg:` (1024px+): `VISIBLE = 3`
+
+This requires the carousel math (`trackWidth`, `cardWidth`, `translateX`) to be recalculated based on `VISIBLE`. Use a `useWindowWidth` hook or a CSS-only approach (set card width via CSS classes instead of inline style math).
+
+Also: move the prev/next buttons **below** the carousel on mobile (not absolutely positioned outside the container) to fix the off-screen clipping issue.
 
 ---
 
-### ISSUE M-08 — Font Hierarchy and Text Styling Are Inconsistent
-- **Location:** Homepage body copy blocks (warehouse description, store description)
-- **Current situation:** The site uses bold + italic styling extensively and inconsistently throughout body copy. The warehouse and store descriptions use combinations of `***bold italic***` text for entire paragraphs, including addresses and descriptions. There is no clear visual hierarchy between section headings, subheadings, and body text.
-- **Conversion impact:** Inconsistent text styling creates cognitive noise and reduces the perceived professionalism of the page. Users scanning the page cannot quickly identify what information is most important. Excessive bold/italic on blocks of text (not just emphasis words) defeats the purpose of emphasis entirely.
-- **Severity:** MEDIUM
-- **Recommended fix:**
-  - Establish a clear 3-level typographic hierarchy: H2 for section names, H3 for sub-sections, body text for descriptions
-  - Remove all italic styling from body copy blocks
-  - Bold only the most critical data points (address, phone, hours) not entire paragraphs
-  - Ensure minimum 16px body font size
-- **Business impact:** Cleaner typography improves content comprehension and perceived credibility.
+#### C2 — Why Us: switch to single-column layout on mobile
+
+**File:** `src/sections/WhyUs.tsx`
+
+Change the grid from:
+```
+grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]
+```
+to:
+```
+grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]
+```
+
+Also reduce FeatureCell padding on mobile:
+```
+px-4 sm:px-8 lg:px-10
+```
+
+This gives each feature cell full width on mobile where the long descriptions and centered layout can breathe.
 
 ---
 
-## Low Issues / Quick Wins
+### 🟠 Medium — Fix before soft launch
+
+#### M1 — Trust Bar: reduce StatCell padding on mobile
+
+**File:** `src/sections/TrustBar.tsx`
+Change `py-5 px-8` → `py-5 px-4 sm:px-8` in `StatCell` to prevent the "Година основаване" label from wrapping.
+
+#### M2 — Brand Showcase featured cards: reduce logo cell padding on mobile
+
+**File:** `src/sections/BrandShowcase.tsx`
+Change `FeaturedCard` padding: `px-6 py-8` → `px-4 py-6 sm:px-6 sm:py-8` to give logos more horizontal room at 155px cell width.
+
+#### M3 — Header: increase touch target for phone icon and hamburger
+
+**File:** `src/sections/Header.tsx`
+Change `p-2` → `p-2.5` on both the phone icon `<a>` and the hamburger `<button>` in the mobile controls `div`. This brings touch targets from 38px to ~43px.
+
+#### M4 — Locations: fix inline phone link touch target
+
+**File:** `src/sections/Locations.tsx`
+In the phone `<a>` inside the info row, add `flex items-center min-h-[36px]` to the parent `div.flex.items-center.gap-3` that wraps the phone icon row.
+
+#### M5 — Footer: add collapse affordance to `<details>` sections
+
+**File:** `src/sections/Footer.tsx`
+Add a `ChevronDown` icon inside each `<summary>` on the right side, and rotate it 180° when the `<details>` is open using the `open` attribute selector in CSS or Tailwind's `group-open:` variant.
+
+#### M6 — Footer: increase nav link touch targets
+
+**File:** `src/sections/Footer.tsx`
+In the navigation `<ul>`, change `space-y-2.5` → `space-y-1` and add `py-2` to each `<Link>` in footer nav, bringing touch target to ~36px.
+
+#### M7 — Footer: fix IconRow phone/email link touch targets
+
+**File:** `src/sections/Footer.tsx`
+In `IconRow`, add `min-h-[36px] flex items-center` to the `<span>` wrapper, or add `py-1` to links inside it.
+
+#### M8 — Viber button: respect iPhone safe area
+
+**File:** `src/components/ViberButton.tsx`
+Replace the Tailwind `bottom-8` class with an inline style:
+```tsx
+style={{ bottom: 'calc(2rem + env(safe-area-inset-bottom))', ... }}
+```
+This ensures the button clears the iPhone home indicator on notched devices.
+
+#### M9 — Header: make store phone accessible without opening menu
+
+**File:** `src/sections/Header.tsx`
+Consider adding a second phone icon in the mobile header for the store number, or restructuring the mobile header to show a dual-phone row (warehouse + store) as compact icon+label links. Alternatively, a single "Контакти" text link could suffice.
+
+#### M10 — Social Proof: add swipe support to carousel
+
+**File:** `src/sections/SocialProof.tsx`
+Add `touchstart` / `touchend` event handlers to the track container. If `touchend.clientX - touchstart.clientX < -50`, call `move(1)` (swipe left → next); if `> 50`, call `move(-1)` (swipe right → prev). This is a minimal, no-dependency addition.
 
 ---
 
-### ISSUE L-01 — "ОЧАКВАМЕ ВИ!" Is Not a CTA
-- **Location:** Company description block (below hero)
-- **Current situation:** The phrase "ОЧАКВАМЕ ВИ!" (We Expect You!) appears in all-caps bold at the end of the company description block. It is not a button, not a link, and leads nowhere.
-- **Severity:** LOW
-- **Recommended fix:** Remove the phrase or convert it into a real CTA button: "Посети ни" / "Как да ни намерите →" linking to /kontakti.
+### 🟢 Minor — Polish before or after launch
+
+#### P1 — Hero: unify horizontal padding with rest of site
+**File:** `src/sections/Hero.tsx` · Change `px-8` → `px-6` in the content wrapper.
+
+#### P2 — Hero: shorten catalog CTA label
+**File:** `src/lib/content.ts` · Change `ctaCatalogLabel` from "Разгледайте нашия каталог" → "Разгледай каталога".
+
+#### P3 — FinalCTA: improve hoursNote separator
+**File:** `src/lib/content.ts` · Change `|` separator in `hoursNote` → `·`: "Пон–Пет: Склад 8:30–17:30 · Магазин 9:00–19:00".
+
+#### P4 — Footer: remove `max-w-[220px]` on mobile brand description
+**File:** `src/sections/Footer.tsx` · Change `max-w-[220px]` → `max-w-[220px] lg:max-w-[220px]` (or remove for mobile).
+
+#### P5 — Footer: increase email link spacing
+**File:** `src/sections/Footer.tsx` · Change `space-y-0.5` → `space-y-2` for email addresses in store column.
+
+#### P6 — Categories: increase featured card height on mobile for visual emphasis
+**File:** `src/sections/Categories.tsx` · Change `h-64 sm:h-72` → `h-72 sm:h-80` for the featured (Paints) card only to distinguish it from regular cards on mobile.
+
+#### P7 — WhyUs: improve mobile section heading line break
+**File:** `src/sections/WhyUs.tsx` · Add `<br className="hidden sm:block lg:hidden" />` before "и доставка" to create a mobile-friendly 2-line heading without changing the desktop layout.
 
 ---
 
-### ISSUE L-02 — "Expand-web2" Artifact in HTML
-- **Location:** /kontakti page contact form area (also potentially visible in homepage structure)
-- **Current situation:** Raw platform artifact text "expand-web2" appears inline in the contact page markup, suggesting unrendered template code. While this may not be visible on-screen, it signals platform configuration issues.
-- **Severity:** LOW
-- **Recommended fix:** Review all pages in the Super Website editor for unrendered template variables.
+## Success Criteria
+
+Before marking mobile as launch-ready, verify:
+
+1. ✅ Reviews carousel shows 1 card on 375px viewport — full width, readable
+2. ✅ Carousel prev/next buttons visible and tappable on 375px
+3. ✅ WhyUs renders single-column on 375px — all text readable without horizontal overflow
+4. ✅ All primary buttons and interactive elements have ≥44px touch targets
+5. ✅ ViberButton does not conflict with iPhone home indicator (test on real device or Xcode Simulator)
+6. ✅ Footer `<details>` sections show a visible collapse/expand affordance
+7. ✅ Scrolling the full page produces no horizontal overflow at 375px
 
 ---
 
-### ISSUE L-03 — Footer Branding Credits SuperHosting.BG, Not Maxterm
-- **Location:** Footer, all pages
-- **Current situation:** "Copyright © 2021 Всички права запазени за SuperHosting.BG" — the copyright names the hosting platform, not the business. This looks like a default template the company never customized.
-- **Severity:** LOW
-- **Recommended fix:** Update footer copyright to "© 2010–2026 Макстерм ООД. Всички права запазени."
-
----
-
-### ISSUE L-04 — No Favicon / Branded Browser Tab Icon
-- **Current situation:** No favicon is referenced in the crawled metadata. The browser tab will show a generic blank icon, further reinforcing the "My Site" default impression.
-- **Severity:** LOW
-- **Recommended fix:** Create a simple favicon (company initials "M" or a stylized logo) and set it in the platform settings.
-
----
-
-### ISSUE L-05 — Image Alt Text Uses Filenames, Not Descriptions
-- **Location:** All homepage images
-- **Current situation:** Image alt tags use raw file names like "153-viberизображение2022-08-1115-03-41-850..." — which are not descriptive, not accessible, and provide no SEO value.
-- **Severity:** LOW
-- **Recommended fix:** Update alt text for all images to descriptive Bulgarian text: e.g., "Benjamin Moore бои Пловдив — Макстерм", "XPS топлоизолационни плочи Пловдив"
-
----
-
-### ISSUE L-06 — No Structured Data / Schema Markup
-- **Current situation:** No LocalBusiness, Organization, or Product schema markup detected in the metadata. This means Google cannot generate rich snippets (star ratings, address, phone, hours) in search results.
-- **Severity:** LOW
-- **Recommended fix:** Add JSON-LD LocalBusiness schema with: name, address (both locations), phone, hours, priceRange, url, sameAs (Facebook). For a local Plovdiv SMB this is a meaningful organic search advantage.
-
----
-
-## Strengths (What to Preserve)
-
-These elements work and should be retained or built upon in the redesign:
-
-1. **Two-location structure is a genuine differentiator** — having both a 2,000 sqm warehouse AND a separate retail store is a real competitive advantage. The homepage already attempts to communicate this. The redesign should make it even more prominent (not less).
-
-2. **Brand name portfolio is impressive** — stocking Benjamin Moore, PPG, Vitex, Baumit, Mapei, Kronopol, Swiss Krono and others in one location is a strong USP. The homepage already lists these brands in text. The redesign should elevate them to visual logo strips.
-
-3. **Own transport is a genuine service differentiator** — delivery capability is a key B2B/contractor decision factor. Already mentioned on the homepage. Deserves more visual emphasis (icon + short statement) rather than buried in a paragraph.
-
-4. **Established since 2010** — 15+ years in business is significant trust capital. Already mentioned ("Създадена през 2010г."). Deserves a badge/stat, not a subordinate clause.
-
-5. **Friendly staff claim** — "нашият любезен и отзивчив персонал" (friendly and responsive staff) is the closest thing to a differentiating customer promise on the site. Preserve this language and give it more prominence (ideally paired with a real photo of staff).
-
-6. **Clear two-section page architecture (warehouse vs. store)** — the logic of separating the warehouse (contractors, bulk) from the store (homeowners, retail) is sound. The redesign should make this dual-audience structure even clearer, not collapse it.
-
----
-
-## Conversion Blockers (Ordered by Impact)
-
-| Rank | Blocker | Why It's Blocking Conversion |
-|---|---|---|
-| 1 | No phone number visible above the fold or in header | Local customers who want to call cannot do so without navigating away. Calling is the #1 conversion event. |
-| 2 | No value proposition in hero | Visitors can't tell in 5 seconds what the business sells, who it's for, or why to engage. Bounce rate elevated. |
-| 3 | No CTA button anywhere on homepage | No action is prompted. Passive visitors leave. Intentional visitors must find their own path. |
-| 4 | No trust signals | First-time visitors have no reason to choose Maxterm over a competitor. Zero reviews, zero certifications, zero social proof. |
-| 5 | No WhatsApp / Viber | Eliminates an entire contact channel preferred by Bulgarian mobile users (especially for out-of-hours inquiries). |
-| 6 | Brand identity confusion (Maxterm vs. MaxDecor vs. "My Site") | Creates cognitive friction and undermines brand recognition at the first touchpoint. |
-| 7 | Hero carousel with no content | The most valuable screen real estate on the site delivers zero information or action. |
-| 8 | No product category overview on homepage | Mid-funnel visitors who arrived via branded search can't self-route to products without clicking through the nav. |
-| 9 | No Google Maps on homepage | Eliminates the fastest path from "website visit" to "physical store visit." |
-| 10 | 2021 copyright + broken ToU link | Signals abandonment to any visitor who notices — particularly relevant to B2B buyers. |
-
----
-
-## Mobile-Specific Issues
-
----
-
-### MOB-01 — Slider Performance on Mobile
-- **Situation:** A 3-image auto-rotating slider loads 3 full-size product images on page load. On a mobile connection (3G/4G, common in Bulgaria outside city centers), this creates significant LCP delay.
-- **Impact:** Google Core Web Vitals penalties, slower perceived load time, higher mobile bounce rate.
-- **Fix:** Replace slider with single static hero image. Use WebP format with srcset for responsive sizing. Target LCP < 2.5 seconds.
-
----
-
-### MOB-02 — Navigation on Mobile (No Confirmed Hamburger)
-- **Situation:** The 7-item navigation on desktop (with long Bulgarian menu item names like "Интериорни и Фасадни Бои" and "Строителни Материали") must collapse to mobile. The Super Website platform provides a hamburger menu by default, but the menu items are long compound phrases that may truncate or overflow on small screens.
-- **Impact:** Navigation usability on 390px (iPhone) screens may be poor. Tap targets for 7 items in a dropdown may be below the 44px minimum.
-- **Fix:** Shorten nav labels for mobile: "Бои" / "Паркет" / "Строителни" / "Лайсни" / "Промоции" / "Контакти". Ensure each tap target is minimum 44×44px with adequate padding.
-
----
-
-### MOB-03 — No Tap-to-Call Phone Number on Mobile
-- **Situation:** Phone numbers only appear on /kontakti as plain text (not `<a href="tel:...">` links). On a mobile device, tapping a plain text phone number may invoke a browser prompt — but only if the browser recognizes it as a number, which is unreliable.
-- **Impact:** Mobile users who want to call must copy and paste the number manually — a significant friction point that eliminates many impulsive call attempts.
-- **Fix:** All phone numbers across the entire site must be wrapped in `<a href="tel:+359876032868">` links. This is the single highest-impact mobile fix possible.
-
----
-
-### MOB-04 — Location Cards Are Prose Blocks (Non-Scannable on Mobile)
-- **Situation:** The warehouse and store information is written as paragraphs of italic bold text. On a 390px screen, a user scrolling quickly cannot extract address, hours, or phone from a wall of similarly-styled text.
-- **Impact:** High-intent mobile visitors (e.g., someone looking up the address while driving or shopping nearby) give up and turn to Google Maps instead — and may not return.
-- **Fix:** Structured cards with icon + label + value pairs (see M-02). Each data point on its own line, minimum 16px font, clear visual separation.
-
----
-
-### MOB-05 — Image Optimization Unknown / Likely Poor
-- **Situation:** All images are served from static.super.website CDN with filenames containing original camera/upload names (e.g., "153-viberизображение2022-08-1115-03-41-850-16602970789669.jpg"). These appear to be original uploaded files served as JPEG without evidence of responsive resizing or WebP conversion.
-- **Impact:** Mobile users downloading desktop-sized JPEGs wastes bandwidth, slows load time, and degrades Core Web Vitals.
-- **Fix:** Ensure all images are served in WebP format at appropriate sizes for mobile viewport. If the Super Website platform doesn't support this, it's a reason to migrate platforms.
-
----
-
-## Recommended Priority Fix Order
-
-Execute in this exact sequence — each tier unblocks the next.
-
-### Tier 1: Immediate (Platform Settings — 0 code required)
-These are configuration changes in the Super Website admin panel. Zero development effort.
-
-| # | Fix | Effort | Impact |
-|---|---|---|---|
-| 1.1 | Change page `<title>` from "My Site" to "Макстерм | Бои, Паркет и Строителни Материали — Пловдив" | 2 min | HIGH |
-| 1.2 | Update `og:title` and `meta-description` to reflect the company name and offer | 5 min | HIGH |
-| 1.3 | Fix or remove the broken /obshti-usloviq footer link | 2 min | HIGH |
-| 1.4 | Update footer copyright text to "© 2010–2026 Макстерм ООД" | 2 min | MEDIUM |
-| 1.5 | Make both phone numbers clickable (tel: links) on /kontakti and throughout the site | 10 min | HIGH |
-| 1.6 | Add a favicon | 5 min | LOW |
-
-**Estimated total time: ~30 minutes. Expected outcome: immediate trust improvement for every visitor.**
-
----
-
-### Tier 2: Homepage Rebuild (Content & Layout — Designer required)
-These require redesigning the homepage layout. Can be done within the Super Website platform or on migration to a new CMS.
-
-| # | Fix | Effort | Impact |
-|---|---|---|---|
-| 2.1 | Replace hero slider with static hero + H1 headline + subheadline + 2 CTA buttons | 2h | HIGHEST |
-| 2.2 | Add header utility bar with both phone numbers (tap-to-call) + hours summary | 1h | HIGH |
-| 2.3 | Add trust band section below hero (founded year, sq.m., brand count, transport, logos) | 2h | HIGH |
-| 2.4 | Add product category cards section (4 categories with icon, name, description, link) | 2h | HIGH |
-| 2.5 | Restructure location blocks as side-by-side cards with icons, address, hours, map links | 1h | MEDIUM |
-| 2.6 | Add floating WhatsApp/Viber button (persistent, all pages) | 30 min | HIGH |
-| 2.7 | Add Google Maps embed for both locations | 30 min | MEDIUM |
-| 2.8 | Update all image alt text | 1h | LOW/SEO |
-
-**Estimated total time: ~10–11 hours design+build. Expected outcome: 30–60% reduction in bounce rate, 2–5× increase in calls and form submissions.**
-
----
-
-### Tier 3: Trust & Content Layer (Content creation required)
-These require gathering real content (photos, reviews, copy) before they can be implemented.
-
-| # | Fix | Effort | Impact |
-|---|---|---|---|
-| 3.1 | Collect and add 3–5 Google Reviews / customer testimonials to homepage | 1 week (collecting) + 1h design | HIGH |
-| 3.2 | Commission professional photography of store interior, products, staff | Half-day shoot | HIGH |
-| 3.3 | Create a clear brand identity: one name, one logo, one tagline used consistently everywhere | Designer + client session | HIGH |
-| 3.4 | Add JSON-LD LocalBusiness schema markup | 1h developer | MEDIUM/SEO |
-| 3.5 | Create or link active Instagram profile + embed feed widget on homepage | Ongoing content | MEDIUM |
-| 3.6 | Set up and verify Google Business Profile with correct hours, address, photos, and collect reviews | 1h setup + ongoing | HIGH/SEO |
-
-**Estimated: 2–3 weeks elapsed. Expected outcome: substantial improvement in organic search visibility, local pack ranking, and conversion trust.**
-
----
-
-### Tier 4: Platform Migration (If Super Website is a limiting factor)
-If the current platform cannot support the above (proper meta tags, schema, tap-to-call, responsive images, no platform branding in footer), migrate to a modern CMS.
-
-**Recommended platform for this use case:** WordPress with Kadence or Blocksy theme (clean, fast, local SEO ready), OR a custom Next.js site built in Claude Code (full control, fast, professional).
-
----
-
-*End of UX & Conversion Audit — maxterm.eu Homepage*
-*Total issues identified: 8 HIGH / 8 MEDIUM / 6 LOW*
-*Estimated conversion lift from full implementation: 3–5× increase in inbound contacts*
+*Audit completed — no code was modified during this process.*
