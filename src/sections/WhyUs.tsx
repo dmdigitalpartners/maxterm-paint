@@ -14,7 +14,7 @@ function FeatureCell({
   title: string
   description: string
 }) {
-  const Icon = ICON_MAP[icon as IconName] ?? Clock
+  const Icon = ICON_MAP[icon as IconName] ?? Users
 
   return (
     <div className="flex flex-col items-center text-center gap-4 px-6 py-8 lg:py-10">
