@@ -41,13 +41,13 @@ export function BrandShowcase() {
       className="bg-surface py-14 lg:py-20"
     >
       {/* Section header */}
-      <div className="max-w-content mx-auto px-6 lg:px-8 mb-10 lg:mb-12">
+      <div className="max-w-content mx-auto px-6 lg:px-8 mb-10 lg:mb-12 text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
           Нашите Марки
         </p>
         <h2
           id="brands-heading"
-          className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-textPrimary leading-tight max-w-2xl"
+          className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-textPrimary leading-tight"
         >
           {BRANDS.sectionTitle}
         </h2>
@@ -64,7 +64,7 @@ export function BrandShowcase() {
       </div>
 
       {/* Tier 2 — Infinite logo marquee */}
-      <div className="max-w-content mx-auto px-6 lg:px-8 mb-4">
+      <div className="max-w-content mx-auto px-6 lg:px-8 mb-4 text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted">
           Също представляваме
         </p>

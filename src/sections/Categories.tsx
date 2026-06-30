@@ -115,7 +115,7 @@ export function Categories() {
     >
       <div className="max-w-content mx-auto px-6 lg:px-8">
         {/* Section header */}
-        <div className="mb-10 lg:mb-12">
+        <div className="mb-10 lg:mb-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Асортимент
           </p>
@@ -125,7 +125,7 @@ export function Categories() {
           >
             {CATEGORIES.sectionTitle}
           </h2>
-          <p className="text-muted text-base lg:text-lg mt-3 max-w-xl">
+          <p className="text-muted text-base lg:text-lg mt-3 max-w-xl mx-auto">
             {CATEGORIES.sectionSubtitle}
           </p>
         </div>

@@ -103,7 +103,7 @@ export function SocialProof() {
         </div>
 
         {/* Section header */}
-        <div className="mb-10 lg:mb-14">
+        <div className="mb-10 lg:mb-14 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Отзиви
           </p>

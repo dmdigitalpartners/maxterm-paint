@@ -112,7 +112,7 @@ export function Locations() {
     >
       <div className="max-w-content mx-auto px-6 lg:px-8">
         {/* Section header */}
-        <div className="mb-10 lg:mb-14">
+        <div className="mb-10 lg:mb-14 text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-2">
             Намерете ни
           </p>
