@@ -57,7 +57,7 @@ export function WhyUs() {
         </div>
 
         {/* Feature grid with elegant separators */}
-        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]">
           {WHY_US.items.map((item, i) => (
             <React.Fragment key={item.title}>
               <FeatureCell {...item} />

@@ -130,7 +130,19 @@ export function SocialProof() {
           </p>
         </div>
 
-        {/* Carousel */}
+        {/* Mobile carousel — native scroll-snap, 1 card at a time */}
+        <div className="block sm:hidden mb-10">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-none">
+            {REVIEWS.map((review) => (
+              <div key={review.id} className="snap-center shrink-0 w-full">
+                <ReviewCard {...review} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop carousel — JS-driven infinite loop */}
+        <div className="hidden sm:block">
         <div className="relative mb-10">
           {/* Prev arrow */}
           <button
@@ -169,6 +181,7 @@ export function SocialProof() {
               ))}
             </div>
           </div>
+        </div>
         </div>
 
         {/* CTA to Google */}
