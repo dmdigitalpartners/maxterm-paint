@@ -1,5 +1,4 @@
-import { Phone, ChevronRight } from 'lucide-react'
-import Link from 'next/link'
+import { Phone } from 'lucide-react'
 import { FINAL_CTA } from '@/lib/content'
 
 export function FinalCTA() {
@@ -56,13 +55,6 @@ export function FinalCTA() {
             <span>{FINAL_CTA.cta2Label}</span>
           </a>
 
-          <Link
-            href={FINAL_CTA.cta3Href}
-            className="inline-flex items-center justify-center gap-1.5 w-full sm:w-auto text-white/80 font-medium py-3.5 px-6 min-h-[52px] text-base hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-md"
-          >
-            {FINAL_CTA.cta3Label}
-            <ChevronRight size={16} aria-hidden="true" />
-          </Link>
         </div>
 
         {/* Hours note */}
