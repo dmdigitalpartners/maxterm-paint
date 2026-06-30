@@ -32,7 +32,7 @@ function CategoryCard({
     <a
       href={href}
       className={`group relative block overflow-hidden rounded-2xl
-        h-64 sm:h-72 lg:h-auto
+        h-72 sm:h-80 lg:h-auto
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2
         transition-all duration-500
         ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}

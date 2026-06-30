@@ -44,7 +44,7 @@ export function Footer() {
                 className="h-14 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-[220px]">
+            <p className="text-sm text-white/60 leading-relaxed mb-6 max-w-xs sm:max-w-[220px]">
               {FOOTER.description}
             </p>
 
@@ -118,7 +118,7 @@ export function Footer() {
                   </a>
                 </IconRow>
                 <IconRow icon={Mail}>
-                  <div className="space-y-0.5">
+                  <div className="space-y-2">
                     <a
                       href={`mailto:${BUSINESS.email.secondary}`}
                       className="block hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"

@@ -26,7 +26,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-black/35" />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-8 text-center lg:text-left">
+      <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-6 text-center lg:text-left">
         <h1
           id="hero-heading"
           className="font-display font-bold text-white text-4xl lg:text-[56px] tracking-tight leading-tight animate-fade-in"

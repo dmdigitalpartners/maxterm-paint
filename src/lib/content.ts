@@ -7,7 +7,7 @@ export const HERO = {
     'Официален представител на Benjamin Moore, PPG, Baumit, Mapei и над 20 водещи марки. Два обекта в Пловдив с наш транспорт.',
   ctaContactLabel: 'Свържете се с нас',
   ctaContactHref: '#kontakti',
-  ctaCatalogLabel: 'Разгледайте нашия каталог',
+  ctaCatalogLabel: 'Разгледай каталога',
   ctaCatalogHref: '#produkti',
   imageAlt: 'Интериор на магазин Макстерм с бои Benjamin Moore и ламинирани подове',
 } as const
@@ -189,7 +189,7 @@ export const FINAL_CTA = {
   cta2Href: 'tel:+359893305306',
   cta3Label: 'Напишете ни',
   cta3Href: '/kontakti',
-  hoursNote: 'Пон–Пет: Склад 8:30–17:30 | Магазин 9:00–19:00',
+  hoursNote: 'Пон–Пет: Склад 8:30–17:30 · Магазин 9:00–19:00',
 } as const
 
 // ─── SOCIAL PROOF ─────────────────────────────────────────────────────────────
