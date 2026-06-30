@@ -116,34 +116,29 @@ export const CATEGORIES = {
 } as const
 
 // ─── BRANDS ───────────────────────────────────────────────────────────────────
-// Source: business-intelligence-report.md (22 confirmed brands)
-// ⚠️ Logo image files are not yet available — section uses styled text badges
+// 15 brands — all have confirmed logo assets in public/assets/logos/
 export const BRANDS = {
   sectionTitle: 'Официален представител на водещи световни марки',
   sectionSubtitle: 'В наши складове и магазин ще намерите продуктите на:',
   logos: [
-    { name: 'Benjamin Moore', category: 'paint' },
-    { name: 'PPG', category: 'paint' },
-    { name: 'Vitex', category: 'paint' },
-    { name: 'Colorstyle', category: 'paint' },
-    { name: 'Rives', category: 'paint' },
-    { name: 'Dessa Decor', category: 'paint' },
-    { name: 'Baumit', category: 'build' },
-    { name: 'Mapei', category: 'build' },
-    { name: 'Angro', category: 'build' },
-    { name: 'Technogips Pro', category: 'build' },
-    { name: 'Thrakon', category: 'build' },
-    { name: 'Ceresit', category: 'build' },
-    { name: 'Bostik', category: 'build' },
-    { name: 'Kronopol', category: 'floor' },
-    { name: 'Swiss Krono', category: 'floor' },
-    { name: 'Classen', category: 'floor' },
-    { name: 'AGT', category: 'floor' },
-    { name: 'Camsan', category: 'floor' },
-    { name: 'Alsapan', category: 'floor' },
-    { name: 'Tarkett', category: 'floor' },
-    { name: 'Peli', category: 'floor' },
-    { name: 'Nirlat', category: 'paint' },
+    // Paint
+    { name: 'Benjamin Moore', category: 'paint', logo: '/assets/logos/benjamin-moore.webp' },
+    { name: 'PPG',            category: 'paint', logo: '/assets/logos/ppg.webp' },
+    { name: 'Vitex',          category: 'paint', logo: '/assets/logos/vitex.webp' },
+    // Building materials
+    { name: 'Baumit',  category: 'build', logo: '/assets/logos/baumit.webp' },
+    { name: 'Mapei',   category: 'build', logo: '/assets/logos/mapei.webp' },
+    { name: 'Ceresit', category: 'build', logo: '/assets/logos/ceresit.webp' },
+    { name: 'Sika',    category: 'build', logo: '/assets/logos/sika.webp' },
+    { name: 'Knauf',   category: 'build', logo: '/assets/logos/knauf.webp' },
+    // Flooring
+    { name: 'Kronopol',   category: 'floor', logo: '/assets/logos/kronopol.webp' },
+    { name: 'Swiss Krono',category: 'floor', logo: '/assets/logos/swiss-krono.webp' },
+    { name: 'Classen',    category: 'floor', logo: '/assets/logos/classen.webp' },
+    { name: 'Tarkett',    category: 'floor', logo: '/assets/logos/tarkett.svg' },
+    { name: 'Peli',       category: 'floor', logo: '/assets/logos/peli.webp' },
+    { name: 'Egger',      category: 'floor', logo: '/assets/logos/egger.webp' },
+    { name: 'Kaindl',     category: 'floor', logo: '/assets/logos/kaindl.webp' },
   ],
 } as const
 
