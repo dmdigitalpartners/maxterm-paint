@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { MapPin, Phone, Mail, Clock, ChevronDown } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { BUSINESS, CONTACT, FOOTER } from '@/lib/content'
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
@@ -67,82 +67,66 @@ export function Footer() {
           </div>
 
           {/* Column 2 — Warehouse */}
-          <details className="group" open>
-            <summary className="lg:hidden list-none cursor-pointer flex items-center justify-between">
-              <FooterHeading>Складова База</FooterHeading>
-              <ChevronDown size={15} className="text-white/40 shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
-            </summary>
-            <div className="lg:block">
-              <div className="hidden lg:block">
-                <FooterHeading>Складова База</FooterHeading>
-              </div>
-              <div className="space-y-3">
-                <IconRow icon={MapPin}>{CONTACT.warehouse.address}</IconRow>
-                <IconRow icon={Phone}>
-                  <a
-                    href={CONTACT.warehouse.phoneHref}
-                    className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
-                  >
-                    {CONTACT.warehouse.phone}
-                  </a>
-                </IconRow>
-                <IconRow icon={Clock}>
-                  <div className="space-y-0.5">
-                    <p>{CONTACT.warehouse.hours.weekdays}</p>
-                    <p>{CONTACT.warehouse.hours.saturday}</p>
-                    <p>{CONTACT.warehouse.hours.sunday}</p>
-                  </div>
-                </IconRow>
-              </div>
+          <div>
+            <FooterHeading>Складова База</FooterHeading>
+            <div className="space-y-3">
+              <IconRow icon={MapPin}>{CONTACT.warehouse.address}</IconRow>
+              <IconRow icon={Phone}>
+                <a
+                  href={CONTACT.warehouse.phoneHref}
+                  className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
+                >
+                  {CONTACT.warehouse.phone}
+                </a>
+              </IconRow>
+              <IconRow icon={Clock}>
+                <div className="space-y-0.5">
+                  <p>{CONTACT.warehouse.hours.weekdays}</p>
+                  <p>{CONTACT.warehouse.hours.saturday}</p>
+                  <p>{CONTACT.warehouse.hours.sunday}</p>
+                </div>
+              </IconRow>
             </div>
-          </details>
+          </div>
 
           {/* Column 3 — Store */}
-          <details className="group" open>
-            <summary className="lg:hidden list-none cursor-pointer flex items-center justify-between">
-              <FooterHeading>Магазин MaxDecor</FooterHeading>
-              <ChevronDown size={15} className="text-white/40 shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
-            </summary>
-            <div className="lg:block">
-              <div className="hidden lg:block">
-                <FooterHeading>Магазин MaxDecor</FooterHeading>
-              </div>
-              <div className="space-y-3">
-                <IconRow icon={MapPin}>{CONTACT.store.address}</IconRow>
-                <IconRow icon={Phone}>
+          <div>
+            <FooterHeading>Магазин MaxDecor</FooterHeading>
+            <div className="space-y-3">
+              <IconRow icon={MapPin}>{CONTACT.store.address}</IconRow>
+              <IconRow icon={Phone}>
+                <a
+                  href={CONTACT.store.phoneHref}
+                  className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
+                >
+                  {CONTACT.store.phone}
+                </a>
+              </IconRow>
+              <IconRow icon={Mail}>
+                <div className="space-y-2">
                   <a
-                    href={CONTACT.store.phoneHref}
-                    className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
+                    href={`mailto:${BUSINESS.email.secondary}`}
+                    className="block hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
                   >
-                    {CONTACT.store.phone}
+                    {BUSINESS.email.secondary}
                   </a>
-                </IconRow>
-                <IconRow icon={Mail}>
-                  <div className="space-y-2">
-                    <a
-                      href={`mailto:${BUSINESS.email.secondary}`}
-                      className="block hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
-                    >
-                      {BUSINESS.email.secondary}
-                    </a>
-                    <a
-                      href={`mailto:${BUSINESS.email.primary}`}
-                      className="block hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
-                    >
-                      {BUSINESS.email.primary}
-                    </a>
-                  </div>
-                </IconRow>
-                <IconRow icon={Clock}>
-                  <div className="space-y-0.5">
-                    <p>{CONTACT.store.hours.weekdays}</p>
-                    <p>{CONTACT.store.hours.saturday}</p>
-                    <p>{CONTACT.store.hours.sunday}</p>
-                  </div>
-                </IconRow>
-              </div>
+                  <a
+                    href={`mailto:${BUSINESS.email.primary}`}
+                    className="block hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm"
+                  >
+                    {BUSINESS.email.primary}
+                  </a>
+                </div>
+              </IconRow>
+              <IconRow icon={Clock}>
+                <div className="space-y-0.5">
+                  <p>{CONTACT.store.hours.weekdays}</p>
+                  <p>{CONTACT.store.hours.saturday}</p>
+                  <p>{CONTACT.store.hours.sunday}</p>
+                </div>
+              </IconRow>
             </div>
-          </details>
+          </div>
 
           {/* Column 4 — Navigation */}
           <div>

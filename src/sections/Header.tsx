@@ -93,9 +93,9 @@ export function Header() {
             <a
               href={CONTACT.warehouse.phoneHref}
               aria-label={`Обади се на склада: ${CONTACT.warehouse.phone}`}
-              className="p-2.5 text-primary rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex items-center px-3 py-1.5 text-sm font-semibold text-white bg-accent rounded-md hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
-              <Phone size={22} aria-hidden="true" />
+              Свържете се
             </a>
             <button
               type="button"

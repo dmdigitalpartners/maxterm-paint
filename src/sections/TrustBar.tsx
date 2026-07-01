@@ -69,11 +69,29 @@ function StatCell({
   label,
   suffix,
   triggered,
-}: (typeof STATS)[0] & { triggered: boolean }) {
+  compact = false,
+}: (typeof STATS)[0] & { triggered: boolean; compact?: boolean }) {
   const count = useCountUp(numericValue, 1200, triggered)
 
   const formatted =
     numericValue !== null ? String(count) : displayValue
+
+  if (compact) {
+    return (
+      <div className="flex flex-col items-center text-center gap-1 py-3 px-2">
+        <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+          <Icon size={15} className="text-accent" aria-hidden="true" />
+        </div>
+        <p className="font-display font-bold text-lg text-textPrimary leading-none tabular-nums">
+          {formatted}
+          {numericValue !== null && suffix ? (
+            <span className="text-textPrimary">{suffix}</span>
+          ) : null}
+        </p>
+        <p className="text-[9px] font-semibold uppercase tracking-wider text-muted">{label}</p>
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center text-center gap-2 py-5 px-4 sm:px-8">
@@ -121,15 +139,20 @@ export function TrustBar() {
         Факти за Макстерм
       </h2>
       <div className="max-w-content mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr] divide-y lg:divide-y-0 divide-border">
+        {/* Mobile: 3 items (no Transport), compact single row */}
+        <div className="lg:hidden grid grid-cols-3 divide-x divide-border">
+          {STATS.filter(s => s.icon !== Truck).map((stat) => (
+            <StatCell key={stat.label} {...stat} triggered={triggered} compact />
+          ))}
+        </div>
+
+        {/* Desktop: all 4 items with dividers */}
+        <div className="hidden lg:grid lg:grid-cols-[1fr_1px_1fr_1px_1fr_1px_1fr]">
           {STATS.map((stat, i) => (
             <React.Fragment key={stat.label}>
               <StatCell {...stat} triggered={triggered} />
               {i < STATS.length - 1 && (
-                <div
-                  className="hidden lg:flex items-center justify-center"
-                  aria-hidden="true"
-                >
+                <div className="flex items-center justify-center" aria-hidden="true">
                   <div className="w-px bg-border self-stretch my-5" />
                 </div>
               )}

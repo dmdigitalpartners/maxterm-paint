@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { Button } from '@/components/Button'
 import { HERO } from '@/lib/content'
 
 export function Hero() {
@@ -29,7 +28,7 @@ export function Hero() {
       <div className="relative z-10 flex flex-col justify-center h-full max-w-content mx-auto px-6 text-center lg:text-left">
         <h1
           id="hero-heading"
-          className="font-display font-bold text-white text-4xl lg:text-[56px] tracking-tight leading-tight animate-fade-in"
+          className="font-display font-bold text-white text-[22px] lg:text-[56px] tracking-tight leading-tight animate-fade-in"
           style={{ animationDelay: '0.3s' }}
         >
           {HERO.headlineLine1}
@@ -38,32 +37,28 @@ export function Hero() {
         </h1>
 
         <p
-          className="text-white/85 text-base lg:text-lg leading-relaxed mt-5 lg:mt-6 max-w-[600px] mx-auto lg:mx-0 animate-fade-in"
+          className="text-white/85 text-sm lg:text-lg leading-relaxed mt-4 lg:mt-6 max-w-[600px] mx-auto lg:mx-0 animate-fade-in"
           style={{ animationDelay: '0.5s' }}
         >
           {HERO.subheadline}
         </p>
 
         <div
-          className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 mt-8 lg:mt-10 animate-fade-in"
+          className="flex flex-row justify-center lg:justify-start gap-2 lg:gap-3 mt-6 lg:mt-10 animate-fade-in"
           style={{ animationDelay: '0.7s' }}
         >
-          <Button
-            variant="primary"
-            size="lg"
+          <a
             href={HERO.ctaContactHref}
-            className="w-full sm:w-auto"
+            className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 font-medium rounded-md transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-accent text-white hover:bg-accent/90 active:scale-[0.97] focus-visible:ring-accent text-sm py-2.5 px-3 min-h-[44px] lg:text-lg lg:py-4 lg:px-8 lg:min-h-[56px]"
           >
             {HERO.ctaContactLabel}
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
+          </a>
+          <a
             href={HERO.ctaCatalogHref}
-            className="w-full sm:w-auto bg-white/20 border-white text-white hover:bg-white/30 focus-visible:ring-white"
+            className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 font-medium rounded-md transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border-2 border-white text-white bg-white/20 hover:bg-white/30 active:scale-[0.97] focus-visible:ring-white text-sm py-2.5 px-3 min-h-[44px] lg:text-lg lg:py-4 lg:px-8 lg:min-h-[56px]"
           >
             {HERO.ctaCatalogLabel}
-          </Button>
+          </a>
         </div>
       </div>
     </section>

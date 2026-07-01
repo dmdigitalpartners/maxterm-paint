@@ -65,7 +65,7 @@ function CategoryCard({
         </h3>
         <p
           className={`text-white/75 text-sm leading-snug mt-1.5
-            ${featured ? 'line-clamp-3 max-w-[340px]' : 'line-clamp-2'}`}
+            ${featured ? 'line-clamp-2 max-w-[340px]' : 'line-clamp-2'}`}
         >
           {description}
         </p>
