@@ -49,8 +49,7 @@ export function BrandShowcase() {
           id="brands-heading"
           className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-textPrimary leading-tight"
         >
-          Официален представител<br />
-          на водещи световни марки
+          Водещи световни марки
         </h2>
         <p className="text-muted text-base lg:text-lg mt-3">{BRANDS.sectionSubtitle}</p>
       </div>
