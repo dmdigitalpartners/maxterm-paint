@@ -42,7 +42,7 @@ export function Header() {
             href="/"
             onClick={handleLogoClick}
             className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-            aria-label="Макстерм — начало"
+            aria-label="Макстерм, начало"
           >
             <Image
               src="/assets/logo.png"

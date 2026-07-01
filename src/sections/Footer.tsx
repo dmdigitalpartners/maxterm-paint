@@ -35,7 +35,7 @@ export function Footer() {
 
           {/* Column 1 — Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" aria-label="Макстерм — начало" className="inline-block mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+            <Link href="/" aria-label="Макстерм, начало" className="inline-block mb-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
               <Image
                 src="/assets/logo.png"
                 alt="Макстерм лого"

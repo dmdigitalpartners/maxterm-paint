@@ -4,11 +4,11 @@ import { Header } from '@/sections/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Макстерм — Бои, Паркет и Строителни Материали в Пловдив',
+  title: 'Макстерм: Бои, Паркет и Строителни Материали в Пловдив',
   description:
     'Официален представител на Benjamin Moore, PPG, Baumit, Mapei и 20+ марки. Два обекта в Пловдив с наш транспорт. Безплатна консултация.',
   openGraph: {
-    title: 'Макстерм — Бои, Паркет и Строителни Материали в Пловдив',
+    title: 'Макстерм: Бои, Паркет и Строителни Материали в Пловдив',
     description:
       'Официален представител на Benjamin Moore, PPG, Baumit, Mapei и 20+ марки. Два обекта в Пловдив с наш транспорт.',
     url: 'https://www.maxterm.eu',

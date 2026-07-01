@@ -37,7 +37,7 @@ export const CONTACT = {
     phoneHref: 'tel:+359876032868',
     mapsHref: 'https://maps.google.com/?q=ул.+Захаридово+46А,+Пловдив',
     image: '/assets/images/warehouse-interior.png',
-    imageAlt: 'Складова база Макстерм — строителни материали на склад',
+    imageAlt: 'Складова база Макстерм, строителни материали на склад',
     badge: 'Склад',
     highlight: '2 000 кв.м. | Собствен транспорт',
     products: 'XPS · EPS · Baumit · Mapei · Technogips Pro',
@@ -54,7 +54,7 @@ export const CONTACT = {
     phoneHref: 'tel:+359893305306',
     mapsHref: 'https://maps.google.com/?q=бул.+Освобождение+39,+Тракия,+Пловдив',
     image: '/assets/images/shop-interior.png',
-    imageAlt: 'Магазин MaxDecor — бои, паркет и декоративни материали',
+    imageAlt: 'Магазин MaxDecor, бои, паркет и декоративни материали',
     badge: 'Магазин',
     highlight: 'Мостри налични',
     products: 'Бои · Паркет · Декор · Лайсни · Мазилки',
@@ -152,25 +152,25 @@ export const WHY_US = {
       icon: 'Users',
       title: 'Водещи световни марки',
       description:
-        '16 години в бранша — насочваме ви към точния продукт, преди да сте платили.',
+        '16 години в бранша. Насочваме ви към точния продукт, преди да сте платили.',
     },
     {
       icon: 'ShieldCheck',
       title: 'Материали с експертен съвет',
       description:
-        'Над 20 марки, само оригинален продукт — без замени и без изненади.',
+        'Над 20 марки, само оригинален продукт. Без замени и без изненади.',
     },
     {
       icon: 'Truck',
       title: 'Доставка без забавяне на обекта',
       description:
-        'Собствен транспорт — без изчакване, без наем и без риск за забавяне.',
+        'Собствен транспорт. Без изчакване, без наем и без риск за забавяне.',
     },
     {
       icon: 'Compass',
       title: 'Ясна посока от начало до край',
       description:
-        'Съветваме по количество, ред и съвместимост — отговаряме, преди да е станало проблем.',
+        'Съветваме по количество, ред и съвместимост. Отговаряме, преди да е станало проблем.',
     },
   ],
 } as const
@@ -200,12 +200,12 @@ export const SOCIAL_PROOF = {
   googleMapsUrl: 'https://maps.app.goo.gl/YOUR_SHORTLINK',
   maps: {
     store: {
-      label: 'Магазин MaxDecor — Тракия',
+      label: 'Магазин MaxDecor, Тракия',
       embedSrc:
         'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d739.6395047757408!2d24.7918827!3d42.13834430000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd13931593b01%3A0x6f18c717095a0df6!2zQmVuamFtaW4gTW9vcmUg0JzQsNC60YEg0JTQtdC60L7RgA!5e0!3m2!1sen!2sbg!4v1782709941992!5m2!1sen!2sbg',
     },
     warehouse: {
-      label: 'Складова База Макстерм — Захаридово',
+      label: 'Складова База Макстерм, Захаридово',
       embedSrc:
         'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2960.6454691072636!2d24.70363287698714!3d42.09364505189013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd13947d975c3%3A0xb1beee1f4c16c867!2z0JzQkNCa0KHQotCV0KDQnCDQntCe0JQgLyBNQVhURVJNIExURA!5e0!3m2!1sen!2sbg!4v1782710132249!5m2!1sen!2sbg',
     },
@@ -272,7 +272,7 @@ export const SOCIAL_PROOF = {
 
 // ─── HEADER NAV ───────────────────────────────────────────────────────────────
 export const HEADER = {
-  logoAlt: 'Макстерм — Бои, Паркет и Строителни Материали',
+  logoAlt: 'Макстерм: Бои, Паркет и Строителни Материали',
   hoursLabel: 'Пон–Пет: 8:30–17:30',
   navItems: [
     { label: 'Бои', href: '/paints' },
