@@ -6,11 +6,10 @@ import { Footer } from '@/sections/Footer'
 type ComingSoonProps = {
   eyebrow: string
   heading: string
-  description: string
   icon: React.ElementType
 }
 
-export function ComingSoon({ eyebrow, heading, description, icon: Icon }: ComingSoonProps) {
+export function ComingSoon({ eyebrow, heading, icon: Icon }: ComingSoonProps) {
   return (
     <>
       <main id="main-content" className="bg-surface">
@@ -34,8 +33,7 @@ export function ComingSoon({ eyebrow, heading, description, icon: Icon }: Coming
             {heading}
           </h1>
           <p className="text-muted text-base lg:text-lg leading-relaxed max-w-[560px] mx-auto mb-10">
-            {description} Тази страница е част от пълната версия на сайта и очаквайте
-            съвсем скоро — междувременно ще се радваме да Ви помогнем лично.
+            Тази страница е част от пълната версия на сайта и очаквайте съвсем скоро.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

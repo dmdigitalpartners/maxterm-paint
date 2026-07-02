@@ -12,7 +12,6 @@ export default function LaminateFloorPage() {
     <ComingSoon
       eyebrow="Каталог Паркет"
       heading="Тази страница все още е в изработка"
-      description="Каталогът с ламиниран паркет от водещи европейски марки се подрежда ред по ред."
       icon={Layers}
     />
   )

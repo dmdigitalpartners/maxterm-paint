@@ -12,7 +12,6 @@ export default function PaintsPage() {
     <ComingSoon
       eyebrow="Каталог Бои"
       heading="Тази страница все още е в изработка"
-      description="Каталогът с интериорни и фасадни бои от Benjamin Moore, PPG и Vitex се пълни точно сега."
       icon={PaintRoller}
     />
   )

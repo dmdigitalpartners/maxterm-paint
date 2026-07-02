@@ -12,7 +12,6 @@ export default function SkirtingPage() {
     <ComingSoon
       eyebrow="Каталог Лайсни"
       heading="Тази страница все още е в изработка"
-      description="Каталогът с алуминиеви и ПВЦ профили за финалния акцент в интериора е почти готов."
       icon={Ruler}
     />
   )

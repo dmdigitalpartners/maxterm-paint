@@ -12,7 +12,6 @@ export default function PromotionsPage() {
     <ComingSoon
       eyebrow="Промоции"
       heading="Тази страница все още е в изработка"
-      description="Страницата с актуални отстъпки и промоции е в процес на договаряне."
       icon={Percent}
     />
   )
