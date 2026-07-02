@@ -11,7 +11,7 @@ export default function BuildingMaterialsPage() {
   return (
     <ComingSoon
       eyebrow="Каталог Строителни Материали"
-      heading="Основите на тази страница се изливат"
+      heading="Тази страница все още е в изработка"
       description="Каталогът с изолации, замазки и лепила от Baumit, Mapei и Ceresit се строи с всеки ден."
       icon={HardHat}
     />
