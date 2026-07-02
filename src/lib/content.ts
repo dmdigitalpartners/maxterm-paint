@@ -103,7 +103,7 @@ export const CATEGORIES = {
       description: 'Изолации, замазки и лепила от Baumit, Mapei и Ceresit. За качествен ремонт.',
       image: '/assets/images/Строителни Материали.png',
       alt: 'Строителни материали Baumit, Mapei и Ceresit на склад',
-      href: '/строителни-материали-xps',
+      href: '/materials',
     },
     {
       title: 'Лайсни и Первази',
@@ -277,7 +277,7 @@ export const HEADER = {
   navItems: [
     { label: 'Бои', href: '/paints' },
     { label: 'Паркет', href: '/laminatefloor' },
-    { label: 'Строителни Материали', href: '/строителни-материали-xps' },
+    { label: 'Строителни Материали', href: '/materials' },
     { label: 'Лайсни', href: '/europrofil' },
     { label: 'Промоции', href: '/promotions' },
   ],
@@ -292,7 +292,7 @@ export const FOOTER = {
   navItems: [
     { label: 'Интериорни и Фасадни Бои', href: '/paints' },
     { label: 'Ламиниран Паркет', href: '/laminatefloor' },
-    { label: 'Строителни Материали', href: '/строителни-материали-xps' },
+    { label: 'Строителни Материали', href: '/materials' },
     { label: 'Лайсни и Первази', href: '/europrofil' },
     { label: 'Промоции', href: '/promotions' },
     { label: 'Контакти', href: '/kontakti' },
