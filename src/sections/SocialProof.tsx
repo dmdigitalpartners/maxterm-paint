@@ -72,8 +72,15 @@ export function SocialProof() {
   // idx is the index of the leftmost visible card in DISPLAY
   const [idx, setIdx] = useState(CLONES) // start at originals[0]
   const trackRef = useRef<HTMLDivElement>(null)
+  // Guards against rapid double-clicks racing idx past the clone buffer
+  // (only VISIBLE clones exist on each side) before the loop-boundary
+  // correction below has a chance to run, which briefly slides the
+  // track past the last real card into empty space.
+  const isAnimating = useRef(false)
 
   const move = useCallback((dir: 1 | -1) => {
+    if (isAnimating.current) return
+    isAnimating.current = true
     setIdx(prev => prev + dir)
   }, [])
 
@@ -98,6 +105,7 @@ export function SocialProof() {
       }
       return next
     })
+    isAnimating.current = false
   }, [])
 
   // Track is TOTAL/VISIBLE times the container width.
