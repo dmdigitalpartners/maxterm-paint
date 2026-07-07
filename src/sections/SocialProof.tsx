@@ -20,14 +20,18 @@ const VISIBLE = 3
 const REVIEWS = SOCIAL_PROOF.featured as ReadonlyArray<Review>
 const N = REVIEWS.length // 8
 
-// Build display array: [last VISIBLE clones] + [all originals] + [first VISIBLE clones]
+// Build display array: [CYCLES full clone-cycles] + [all originals] + [CYCLES full clone-cycles].
 // This enables seamless infinite looping: when we slide past either edge we silently
-// jump to the mirror position inside the originals block.
-const CLONES = VISIBLE
+// jump to the mirror position inside the originals block. Buffering many full cycles
+// (not just one VISIBLE-sized clone) means that jump is effectively unreachable under
+// any realistic amount of clicking, rapid or otherwise.
+const CYCLES = 5
+const CLONES = N * CYCLES
+const REPEATED_CYCLE = Array.from({ length: CYCLES }, () => REVIEWS).flat()
 const DISPLAY = [
-  ...REVIEWS.slice(N - CLONES), // tail clones  (indices 0 – CLONES-1)
-  ...REVIEWS,                    // originals    (indices CLONES – CLONES+N-1)
-  ...REVIEWS.slice(0, CLONES),  // head clones  (indices CLONES+N – CLONES+N+CLONES-1)
+  ...REPEATED_CYCLE, // tail clones  (indices 0 – CLONES-1)
+  ...REVIEWS,         // originals    (indices CLONES – CLONES+N-1)
+  ...REPEATED_CYCLE, // head clones  (indices CLONES+N – CLONES+N+CLONES-1)
 ]
 const TOTAL = DISPLAY.length // 14
 
@@ -73,12 +77,11 @@ export function SocialProof() {
   const [idx, setIdxState] = useState(CLONES) // start at originals[0]
   const idxRef = useRef(idx)
   const trackRef = useRef<HTMLDivElement>(null)
-  // Guards against rapid clicks racing idx past the clone buffer (only
-  // VISIBLE clones exist on each side) before the loop-boundary correction
-  // below has a chance to run, which briefly slides the track past the
-  // last real card into empty space. Extra clicks during an animation are
-  // queued instead of dropped, so fast repeated clicking still keeps the
-  // carousel cycling continuously rather than stalling.
+  // Guards against rapid clicks racing idx past the clone buffer before the
+  // loop-boundary correction below has a chance to run, which would slide
+  // the track past the last real card into empty space. Extra clicks during
+  // an animation are queued instead of dropped, so fast repeated clicking
+  // still keeps the carousel cycling continuously rather than stalling.
   const isAnimating = useRef(false)
   const queue = useRef<Array<1 | -1>>([])
 
