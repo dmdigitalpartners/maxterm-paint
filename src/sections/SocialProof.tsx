@@ -167,7 +167,7 @@ export function SocialProof() {
           {/* Prev arrow */}
           <button
             onClick={() => move(-1)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-10 z-10 w-12 h-12 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-primary hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-primary hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Предишен отзив"
           >
             <ChevronLeft size={22} />
@@ -176,7 +176,7 @@ export function SocialProof() {
           {/* Next arrow */}
           <button
             onClick={() => move(1)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-10 z-10 w-12 h-12 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-primary hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 z-10 w-12 h-12 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-primary hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Следващ отзив"
           >
             <ChevronRight size={22} />
