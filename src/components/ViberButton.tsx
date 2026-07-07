@@ -4,7 +4,7 @@ import { CONTACT } from '@/lib/content'
 export function ViberButton() {
   return (
     <a
-      href={`viber://chat?number=+359${CONTACT.warehouse.phone.replace(/\D/g, '').slice(1)}`}
+      href={`viber://chat?number=+359${CONTACT.store.phone.replace(/\D/g, '').slice(1)}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Пишете ни в Viber"
