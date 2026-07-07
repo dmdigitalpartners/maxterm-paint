@@ -35,11 +35,11 @@ const TOTAL = DISPLAY.length // 14
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5" aria-label={`${rating} от 5 звезди`}>
+    <div className="flex gap-1" aria-label={`${rating} от 5 звезди`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          size={14}
+          size={16}
           className={i < rating ? 'text-accent fill-accent' : 'text-border'}
           aria-hidden="true"
         />
@@ -50,16 +50,16 @@ function StarRating({ rating }: { rating: number }) {
 
 function ReviewCard({ name, rating, location, text }: Review) {
   return (
-    <article className="bg-white rounded-[10px] border border-border shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-6 flex flex-col gap-3 h-full select-none">
+    <article className="bg-white rounded-xl border border-border shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 flex flex-col gap-4 h-full min-h-[260px] select-none">
       <StarRating rating={rating} />
-      <p className="text-textPrimary text-sm leading-relaxed line-clamp-5 flex-1 italic">
+      <p className="text-textPrimary text-base leading-relaxed line-clamp-5 flex-1 italic">
         &ldquo;{text}&rdquo;
       </p>
-      <div className="pt-3 border-t border-border">
-        <p className="font-semibold text-sm text-textPrimary">{name}</p>
-        <div className="flex items-center gap-1 mt-0.5">
-          <MapPin size={11} className="text-muted shrink-0" aria-hidden="true" />
-          <span className="text-xs text-muted">{location}</span>
+      <div className="pt-4 border-t border-border">
+        <p className="font-semibold text-base text-textPrimary">{name}</p>
+        <div className="flex items-center gap-1.5 mt-1">
+          <MapPin size={13} className="text-muted shrink-0" aria-hidden="true" />
+          <span className="text-sm text-muted">{location}</span>
         </div>
       </div>
     </article>
