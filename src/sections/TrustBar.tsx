@@ -7,8 +7,8 @@ const STATS = [
   {
     icon: Building2,
     numericValue: null,
-    displayValue: '2010',
-    label: 'Година основаване',
+    displayValue: '2010г',
+    label: 'основаване',
     suffix: '',
   },
   {
