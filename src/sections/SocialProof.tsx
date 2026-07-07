@@ -72,14 +72,20 @@ export function SocialProof() {
   // idx is the index of the leftmost visible card in DISPLAY
   const [idx, setIdx] = useState(CLONES) // start at originals[0]
   const trackRef = useRef<HTMLDivElement>(null)
-  // Guards against rapid double-clicks racing idx past the clone buffer
-  // (only VISIBLE clones exist on each side) before the loop-boundary
-  // correction below has a chance to run, which briefly slides the
-  // track past the last real card into empty space.
+  // Guards against rapid clicks racing idx past the clone buffer (only
+  // VISIBLE clones exist on each side) before the loop-boundary correction
+  // below has a chance to run, which briefly slides the track past the
+  // last real card into empty space. Extra clicks during an animation are
+  // queued instead of dropped, so fast repeated clicking still keeps the
+  // carousel cycling continuously rather than stalling.
   const isAnimating = useRef(false)
+  const queue = useRef<Array<1 | -1>>([])
 
   const move = useCallback((dir: 1 | -1) => {
-    if (isAnimating.current) return
+    if (isAnimating.current) {
+      queue.current.push(dir)
+      return
+    }
     isAnimating.current = true
     setIdx(prev => prev + dir)
   }, [])
@@ -105,7 +111,13 @@ export function SocialProof() {
       }
       return next
     })
-    isAnimating.current = false
+
+    const next = queue.current.shift()
+    if (next !== undefined) {
+      setIdx(prev => prev + next)
+    } else {
+      isAnimating.current = false
+    }
   }, [])
 
   // Track is TOTAL/VISIBLE times the container width.
@@ -174,7 +186,7 @@ export function SocialProof() {
           <div className="overflow-hidden">
             <div
               ref={trackRef}
-              className="flex transition-transform duration-300 ease-in-out"
+              className="flex transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
               style={{ width: trackWidth, transform: `translateX(${translateX})` }}
               onTransitionEnd={onTransitionEnd}
             >
