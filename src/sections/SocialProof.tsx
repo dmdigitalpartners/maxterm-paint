@@ -66,7 +66,7 @@ function StarRating({ rating }: { rating: number }) {
 
 function ReviewCard({ name, rating, location, text }: Review) {
   return (
-    <article className="bg-white rounded-xl border border-border shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 flex flex-col gap-4 h-full min-h-[260px] select-none">
+    <article className="bg-white rounded-xl border border-border shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 flex flex-col gap-4 h-[290px] select-none">
       <StarRating rating={rating} />
       <p className="text-textPrimary text-base leading-relaxed line-clamp-5 flex-1 italic">
         &ldquo;{text}&rdquo;
