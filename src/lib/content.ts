@@ -194,7 +194,7 @@ export const FINAL_CTA = {
 // Source: Google Maps reviews (all 5-star, public)
 // Last scraped: June 2026
 export const SOCIAL_PROOF = {
-  sectionTitle: 'Клиентите за нас',
+  sectionTitle: 'Думите на нашите клиенти',
   sectionSubtitle: 'Реални отзиви от Google Maps',
   // TODO: replace placeholder with real Google Business shortlink
   googleMapsUrl: 'https://maps.app.goo.gl/YOUR_SHORTLINK',

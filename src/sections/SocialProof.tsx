@@ -145,7 +145,7 @@ export function SocialProof() {
           >
             {SOCIAL_PROOF.sectionTitle}
           </h2>
-          <p className="text-muted text-base lg:text-lg mt-3">
+          <p className="text-muted text-base lg:text-lg mt-3 underline">
             {SOCIAL_PROOF.sectionSubtitle}
           </p>
         </div>
