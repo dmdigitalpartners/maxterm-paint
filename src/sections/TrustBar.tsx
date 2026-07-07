@@ -7,9 +7,10 @@ const STATS = [
   {
     icon: Building2,
     numericValue: null,
-    displayValue: '2010г',
+    displayValue: '2010',
     label: 'основаване',
     suffix: '',
+    unit: 'г',
   },
   {
     icon: Star,
@@ -68,6 +69,7 @@ function StatCell({
   displayValue,
   label,
   suffix,
+  unit,
   triggered,
   compact = false,
 }: (typeof STATS)[0] & { triggered: boolean; compact?: boolean }) {
@@ -87,6 +89,7 @@ function StatCell({
           {numericValue !== null && suffix ? (
             <span className="text-textPrimary">{suffix}</span>
           ) : null}
+          {unit ? <span className="font-body">{unit}</span> : null}
         </p>
         <p className="text-[9px] font-semibold uppercase tracking-wider text-muted">{label}</p>
       </div>
@@ -103,6 +106,7 @@ function StatCell({
         {numericValue !== null && suffix ? (
           <span className="text-textPrimary">{suffix}</span>
         ) : null}
+        {unit ? <span className="font-body">{unit}</span> : null}
       </p>
       <p className="text-[10px] font-semibold uppercase tracking-widest text-muted">{label}</p>
     </div>
