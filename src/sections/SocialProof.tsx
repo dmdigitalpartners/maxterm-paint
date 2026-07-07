@@ -186,7 +186,7 @@ export function SocialProof() {
           <div className="overflow-hidden">
             <div
               ref={trackRef}
-              className="flex transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+              className="flex transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
               style={{ width: trackWidth, transform: `translateX(${translateX})` }}
               onTransitionEnd={onTransitionEnd}
             >
