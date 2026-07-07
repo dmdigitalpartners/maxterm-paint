@@ -149,7 +149,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-3 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
           <p>© {FOOTER.copyrightYear} {BUSINESS.name}. Всички права запазени.</p>
           <p>Пловдив, България</p>
         </div>
