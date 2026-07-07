@@ -70,7 +70,8 @@ function ReviewCard({ name, rating, location, text }: Review) {
 
 export function SocialProof() {
   // idx is the index of the leftmost visible card in DISPLAY
-  const [idx, setIdx] = useState(CLONES) // start at originals[0]
+  const [idx, setIdxState] = useState(CLONES) // start at originals[0]
+  const idxRef = useRef(idx)
   const trackRef = useRef<HTMLDivElement>(null)
   // Guards against rapid clicks racing idx past the clone buffer (only
   // VISIBLE clones exist on each side) before the loop-boundary correction
@@ -81,44 +82,61 @@ export function SocialProof() {
   const isAnimating = useRef(false)
   const queue = useRef<Array<1 | -1>>([])
 
+  const setIdx = useCallback((value: number) => {
+    idxRef.current = value
+    setIdxState(value)
+  }, [])
+
   const move = useCallback((dir: 1 | -1) => {
     if (isAnimating.current) {
       queue.current.push(dir)
       return
     }
     isAnimating.current = true
-    setIdx(prev => prev + dir)
-  }, [])
+    setIdx(idxRef.current + dir)
+  }, [setIdx])
+
+  // Pop the next queued click (if any) and animate to it; otherwise release
+  // the lock. Only called once we're certain the track's transition duration
+  // is back to normal, so the resulting move is guaranteed to fire its own
+  // transitionend and can't leave isAnimating stuck true.
+  const advanceQueueOrRelease = useCallback(() => {
+    const next = queue.current.shift()
+    if (next !== undefined) {
+      setIdx(idxRef.current + next)
+    } else {
+      isAnimating.current = false
+    }
+  }, [setIdx])
 
   // After each animation completes, check if we slid into a clone region.
   // If so, silently jump to the mirrored position in the originals block.
   const onTransitionEnd = useCallback(() => {
-    setIdx(prev => {
-      let next = prev
-      if (prev < CLONES) next = prev + N         // slid left into tail clones
-      else if (prev >= CLONES + N) next = prev - N // slid right into head clones
-      if (next !== prev) {
-        // Disable transition for the silent jump, then re-enable
-        const el = trackRef.current
-        if (el) {
-          el.style.transitionDuration = '0ms'
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() => {
-              if (trackRef.current) trackRef.current.style.transitionDuration = ''
-            }),
-          )
-        }
-      }
-      return next
-    })
+    const prev = idxRef.current
+    let corrected = prev
+    if (prev < CLONES) corrected = prev + N         // slid left into tail clones
+    else if (prev >= CLONES + N) corrected = prev - N // slid right into head clones
 
-    const next = queue.current.shift()
-    if (next !== undefined) {
-      setIdx(prev => prev + next)
-    } else {
-      isAnimating.current = false
+    if (corrected !== prev) {
+      setIdx(corrected)
+      // Disable transition for the silent jump, then re-enable. Any queued
+      // click is only applied after the duration is restored, so it always
+      // gets a real animated transition instead of also jumping instantly.
+      const el = trackRef.current
+      if (el) {
+        el.style.transitionDuration = '0ms'
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            if (trackRef.current) trackRef.current.style.transitionDuration = ''
+            advanceQueueOrRelease()
+          }),
+        )
+        return
+      }
     }
-  }, [])
+
+    advanceQueueOrRelease()
+  }, [setIdx, advanceQueueOrRelease])
 
   // Track is TOTAL/VISIBLE times the container width.
   // Each card occupies 1/TOTAL of the track = 1/VISIBLE of the container.
