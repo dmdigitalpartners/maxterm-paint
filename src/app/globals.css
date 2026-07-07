@@ -15,9 +15,6 @@
     animation: marqueeLeft 36s linear infinite;
     will-change: transform;
   }
-  .animate-marquee:hover {
-    animation-play-state: paused;
-  }
 }
 
 @layer base {
