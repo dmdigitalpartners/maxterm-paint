@@ -15,21 +15,37 @@ type Review = {
 }
 
 // ─── Carousel constants ───────────────────────────────────────────────────────
+//
+// Instead of a finite array of clone cards that needs an occasional silent
+// "jump back" once you scroll past it, this carousel uses a small FIXED
+// number of card slots that each independently recycle to a new review once
+// they've scrolled fully outside the visible+buffer window (i.e. while
+// completely hidden by overflow-hidden). `position` — the one value that
+// actually drives the visible motion — just counts ...,-1,0,1,2,3,... and
+// never resets, so there is no backward jump in the value anything on
+// screen is animated from, ever, no matter how many times you click.
 
 const VISIBLE = 3
 const REVIEWS = SOCIAL_PROOF.featured as ReadonlyArray<Review>
 const N = REVIEWS.length // 8
+// Extra off-screen slots buffered on each side, so a card sliding into view
+// is already rendered (just clipped) before its transition starts, and so a
+// recycled slot's teleport always happens while fully hidden.
+const BUFFER = 2
+const SLOT_COUNT = VISIBLE + BUFFER * 2 // fixed forever — never grows
+const TRANSITION_MS = 500
 
-// Build display array: [last VISIBLE clones] + [all originals] + [first VISIBLE clones]
-// This enables seamless infinite looping: when we slide past either edge we silently
-// jump to the mirror position inside the originals block.
-const CLONES = VISIBLE
-const DISPLAY = [
-  ...REVIEWS.slice(N - CLONES), // tail clones  (indices 0 – CLONES-1)
-  ...REVIEWS,                    // originals    (indices CLONES – CLONES+N-1)
-  ...REVIEWS.slice(0, CLONES),  // head clones  (indices CLONES+N – CLONES+N+CLONES-1)
-]
-const TOTAL = DISPLAY.length // 14
+const mod = (n: number, m: number) => ((n % m) + m) % m
+
+type Slot = { key: string; absoluteIndex: number; instant: boolean }
+
+function makeInitialSlots(): Slot[] {
+  return Array.from({ length: SLOT_COUNT }, (_, i) => ({
+    key: `slot-${i}`,
+    absoluteIndex: i - BUFFER,
+    instant: false,
+  }))
+}
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -69,22 +85,47 @@ function ReviewCard({ name, rating, location, text }: Review) {
 // ─── Main section ─────────────────────────────────────────────────────────────
 
 export function SocialProof() {
-  // idx is the index of the leftmost visible card in DISPLAY
-  const [idx, setIdxState] = useState(CLONES) // start at originals[0]
-  const idxRef = useRef(idx)
-  const trackRef = useRef<HTMLDivElement>(null)
-  // Guards against rapid clicks racing idx past the clone buffer (only
-  // VISIBLE clones exist on each side) before the loop-boundary correction
-  // below has a chance to run, which briefly slides the track past the
-  // last real card into empty space. Extra clicks during an animation are
-  // queued instead of dropped, so fast repeated clicking still keeps the
-  // carousel cycling continuously rather than stalling.
+  const [position, setPositionState] = useState(0)
+  const [slots, setSlotsState] = useState<Slot[]>(makeInitialSlots)
+  const positionRef = useRef(position)
+  const slotsRef = useRef(slots)
+  // Guards against rapid clicks overlapping mid-animation. Extra clicks
+  // during an animation are queued instead of dropped, so fast repeated
+  // clicking still keeps the carousel cycling continuously rather than
+  // stalling.
   const isAnimating = useRef(false)
   const queue = useRef<Array<1 | -1>>([])
 
-  const setIdx = useCallback((value: number) => {
-    idxRef.current = value
-    setIdxState(value)
+  const applyMove = useCallback((dir: 1 | -1) => {
+    const prevPosition = positionRef.current
+    const newPosition = prevPosition + dir
+
+    // Recycle exactly the one slot that's about to scroll fully outside the
+    // visible+buffer window to the far side of it, reassigning it to the
+    // next review that will be needed there. It's flagged `instant` so its
+    // own (large) reposition skips the CSS transition — invisible either
+    // way since it only ever happens while that slot is fully clipped by
+    // overflow-hidden, both before and after.
+    const dropIndex = dir === 1 ? prevPosition - BUFFER : prevPosition + VISIBLE + BUFFER - 1
+    const newSlots = slotsRef.current.map(s =>
+      s.absoluteIndex === dropIndex
+        ? { ...s, absoluteIndex: s.absoluteIndex + dir * SLOT_COUNT, instant: true }
+        : { ...s, instant: false },
+    )
+
+    positionRef.current = newPosition
+    slotsRef.current = newSlots
+    setPositionState(newPosition)
+    setSlotsState(newSlots)
+
+    window.setTimeout(() => {
+      const next = queue.current.shift()
+      if (next !== undefined) {
+        applyMove(next)
+      } else {
+        isAnimating.current = false
+      }
+    }, TRANSITION_MS + 20)
   }, [])
 
   const move = useCallback((dir: 1 | -1) => {
@@ -93,57 +134,10 @@ export function SocialProof() {
       return
     }
     isAnimating.current = true
-    setIdx(idxRef.current + dir)
-  }, [setIdx])
+    applyMove(dir)
+  }, [applyMove])
 
-  // Pop the next queued click (if any) and animate to it; otherwise release
-  // the lock. Only called once we're certain the track's transition duration
-  // is back to normal, so the resulting move is guaranteed to fire its own
-  // transitionend and can't leave isAnimating stuck true.
-  const advanceQueueOrRelease = useCallback(() => {
-    const next = queue.current.shift()
-    if (next !== undefined) {
-      setIdx(idxRef.current + next)
-    } else {
-      isAnimating.current = false
-    }
-  }, [setIdx])
-
-  // After each animation completes, check if we slid into a clone region.
-  // If so, silently jump to the mirrored position in the originals block.
-  const onTransitionEnd = useCallback(() => {
-    const prev = idxRef.current
-    let corrected = prev
-    if (prev < CLONES) corrected = prev + N         // slid left into tail clones
-    else if (prev >= CLONES + N) corrected = prev - N // slid right into head clones
-
-    if (corrected !== prev) {
-      setIdx(corrected)
-      // Disable transition for the silent jump, then re-enable. Any queued
-      // click is only applied after the duration is restored, so it always
-      // gets a real animated transition instead of also jumping instantly.
-      const el = trackRef.current
-      if (el) {
-        el.style.transitionDuration = '0ms'
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            if (trackRef.current) trackRef.current.style.transitionDuration = ''
-            advanceQueueOrRelease()
-          }),
-        )
-        return
-      }
-    }
-
-    advanceQueueOrRelease()
-  }, [setIdx, advanceQueueOrRelease])
-
-  // Track is TOTAL/VISIBLE times the container width.
-  // Each card occupies 1/TOTAL of the track = 1/VISIBLE of the container.
-  // translateX moves by one card = (100/TOTAL)% of track width per step.
-  const trackWidth = `${(TOTAL / VISIBLE) * 100}%`
-  const cardWidth = `${100 / TOTAL}%`
-  const translateX = `${-(idx * 100) / TOTAL}%`
+  const cardWidthPercent = 100 / VISIBLE
 
   return (
     <section
@@ -200,24 +194,27 @@ export function SocialProof() {
             <ChevronRight size={22} />
           </button>
 
-          {/* Track container — clips overflow */}
-          <div className="overflow-hidden">
-            <div
-              ref={trackRef}
-              className="flex transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-              style={{ width: trackWidth, transform: `translateX(${translateX})` }}
-              onTransitionEnd={onTransitionEnd}
-            >
-              {DISPLAY.map((review, i) => (
+          {/* Viewport — clips overflow. Each slot below is independently
+              absolutely-positioned rather than laid out in a single sliding
+              track, so recycling one slot never has to move the shared
+              "camera" position. */}
+          <div className="overflow-hidden relative min-h-[290px]">
+            {slots.map(slot => {
+              const review = REVIEWS[mod(slot.absoluteIndex, N)]
+              const offset = slot.absoluteIndex - position
+              return (
                 <div
-                  key={`${review.id}-${i}`}
-                  className="px-2.5"
-                  style={{ width: cardWidth }}
+                  key={slot.key}
+                  className={
+                    'absolute top-0 left-0 px-2.5' +
+                    (slot.instant ? '' : ' transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]')
+                  }
+                  style={{ width: `${cardWidthPercent}%`, transform: `translateX(${offset * 100}%)` }}
                 >
                   <ReviewCard {...review} />
                 </div>
-              ))}
-            </div>
+              )
+            })}
           </div>
         </div>
         </div>
