@@ -16,7 +16,7 @@ type Review = {
 
 // ─── Carousel constants ───────────────────────────────────────────────────────
 
-const VISIBLE = 2
+const VISIBLE = 3
 const REVIEWS = SOCIAL_PROOF.featured as ReadonlyArray<Review>
 const N = REVIEWS.length // 8
 
@@ -132,7 +132,7 @@ export function SocialProof() {
       aria-labelledby="social-proof-heading"
       className="bg-surface py-14 lg:py-20"
     >
-      <div className="max-w-content mx-auto px-4 lg:px-6">
+      <div className="max-w-[1400px] mx-auto px-4 lg:px-6">
 
         {/* Section header */}
         <div className="mb-10 lg:mb-14 text-center">
@@ -193,7 +193,7 @@ export function SocialProof() {
               {DISPLAY.map((review, i) => (
                 <div
                   key={`${review.id}-${i}`}
-                  className="px-3"
+                  className="px-2.5"
                   style={{ width: cardWidth }}
                 >
                   <ReviewCard {...review} />
