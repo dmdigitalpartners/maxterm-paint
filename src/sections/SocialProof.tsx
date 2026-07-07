@@ -16,7 +16,7 @@ type Review = {
 
 // ─── Carousel constants ───────────────────────────────────────────────────────
 
-const VISIBLE = 3
+const VISIBLE = 2
 const REVIEWS = SOCIAL_PROOF.featured as ReadonlyArray<Review>
 const N = REVIEWS.length // 8
 
@@ -193,7 +193,7 @@ export function SocialProof() {
               {DISPLAY.map((review, i) => (
                 <div
                   key={`${review.id}-${i}`}
-                  className="px-2.5"
+                  className="px-3"
                   style={{ width: cardWidth }}
                 >
                   <ReviewCard {...review} />
