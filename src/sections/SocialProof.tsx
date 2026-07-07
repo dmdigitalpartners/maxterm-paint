@@ -89,14 +89,16 @@ export function SocialProof() {
   const [slots, setSlotsState] = useState<Slot[]>(makeInitialSlots)
   const positionRef = useRef(position)
   const slotsRef = useRef(slots)
-  // Guards against rapid clicks overlapping mid-animation. Extra clicks
-  // during an animation are queued instead of dropped, so fast repeated
-  // clicking still keeps the carousel cycling continuously rather than
-  // stalling.
+  // Guards against rapid clicks overlapping mid-animation. Clicks that land
+  // while a move is still animating are ignored (not queued), so the
+  // carousel always advances exactly one review per finished animation,
+  // regardless of how many extra times it was clicked in the meantime.
   const isAnimating = useRef(false)
-  const queue = useRef<Array<1 | -1>>([])
 
-  const applyMove = useCallback((dir: 1 | -1) => {
+  const move = useCallback((dir: 1 | -1) => {
+    if (isAnimating.current) return
+    isAnimating.current = true
+
     const prevPosition = positionRef.current
     const newPosition = prevPosition + dir
 
@@ -119,23 +121,9 @@ export function SocialProof() {
     setSlotsState(newSlots)
 
     window.setTimeout(() => {
-      const next = queue.current.shift()
-      if (next !== undefined) {
-        applyMove(next)
-      } else {
-        isAnimating.current = false
-      }
+      isAnimating.current = false
     }, TRANSITION_MS + 20)
   }, [])
-
-  const move = useCallback((dir: 1 | -1) => {
-    if (isAnimating.current) {
-      queue.current.push(dir)
-      return
-    }
-    isAnimating.current = true
-    applyMove(dir)
-  }, [applyMove])
 
   const cardWidthPercent = 100 / VISIBLE
 
