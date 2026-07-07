@@ -141,7 +141,7 @@ export function SocialProof() {
           </p>
           <h2
             id="social-proof-heading"
-            className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-textPrimary leading-tight"
+            className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-textPrimary leading-tight tracking-normal"
           >
             {SOCIAL_PROOF.sectionTitle}
           </h2>
