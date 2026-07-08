@@ -131,7 +131,20 @@ export function SocialProof() {
   const scrollMobile = useCallback((dir: 1 | -1) => {
     const el = mobileScrollRef.current
     if (!el) return
-    el.scrollBy({ left: dir * el.clientWidth, behavior: 'smooth' })
+    // Scroll to the exact left edge of the target card rather than by a
+    // fixed clientWidth offset - the gap between cards would otherwise
+    // undershoot the next snap point, leaving a sliver of the previous
+    // card visible instead of showing the next one fully.
+    const cards = Array.from(el.children) as HTMLElement[]
+    const currentIndex = cards.reduce(
+      (closest, card, i) =>
+        Math.abs(card.offsetLeft - el.scrollLeft) < Math.abs(cards[closest].offsetLeft - el.scrollLeft)
+          ? i
+          : closest,
+      0,
+    )
+    const targetIndex = Math.min(Math.max(currentIndex + dir, 0), cards.length - 1)
+    el.scrollTo({ left: cards[targetIndex].offsetLeft, behavior: 'smooth' })
   }, [])
 
   return (
