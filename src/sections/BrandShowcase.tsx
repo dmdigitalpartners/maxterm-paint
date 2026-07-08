@@ -69,7 +69,7 @@ export function BrandShowcase() {
           Също представляваме
         </p>
       </div>
-      <div className="max-w-[900px] mx-auto relative overflow-hidden">
+      <div className="max-w-[900px] mx-auto px-6 lg:px-8 relative overflow-hidden">
         {/* Fade edges matching the section background */}
         <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
