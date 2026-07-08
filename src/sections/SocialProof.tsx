@@ -131,20 +131,27 @@ export function SocialProof() {
   const scrollMobile = useCallback((dir: 1 | -1) => {
     const el = mobileScrollRef.current
     if (!el) return
-    // Scroll to the exact left edge of the target card rather than by a
-    // fixed clientWidth offset - the gap between cards would otherwise
-    // undershoot the next snap point, leaving a sliver of the previous
-    // card visible instead of showing the next one fully.
+    // Scroll by the live visual distance to the target card's left edge,
+    // measured from actual current bounding boxes rather than offsetLeft -
+    // offsetLeft was consistently off by exactly the card gap here (likely
+    // an interaction between flex `gap` and `scroll-snap-align: center`),
+    // which undershot the next snap point and left a sliver of the
+    // previous card visible instead of showing the next one fully.
+    const containerRect = el.getBoundingClientRect()
     const cards = Array.from(el.children) as HTMLElement[]
-    const currentIndex = cards.reduce(
-      (closest, card, i) =>
-        Math.abs(card.offsetLeft - el.scrollLeft) < Math.abs(cards[closest].offsetLeft - el.scrollLeft)
-          ? i
-          : closest,
-      0,
-    )
+    const containerCenter = containerRect.left + containerRect.width / 2
+    const currentIndex = cards.reduce((closest, card, i) => {
+      const center = (r: HTMLElement) => {
+        const rect = r.getBoundingClientRect()
+        return rect.left + rect.width / 2
+      }
+      return Math.abs(center(card) - containerCenter) < Math.abs(center(cards[closest]) - containerCenter)
+        ? i
+        : closest
+    }, 0)
     const targetIndex = Math.min(Math.max(currentIndex + dir, 0), cards.length - 1)
-    el.scrollTo({ left: cards[targetIndex].offsetLeft, behavior: 'smooth' })
+    const delta = cards[targetIndex].getBoundingClientRect().left - containerRect.left
+    el.scrollBy({ left: delta, behavior: 'smooth' })
   }, [])
 
   return (
