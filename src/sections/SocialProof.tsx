@@ -127,6 +127,13 @@ export function SocialProof() {
 
   const cardWidthPercent = 100 / VISIBLE
 
+  const mobileScrollRef = useRef<HTMLDivElement>(null)
+  const scrollMobile = useCallback((dir: 1 | -1) => {
+    const el = mobileScrollRef.current
+    if (!el) return
+    el.scrollBy({ left: dir * el.clientWidth, behavior: 'smooth' })
+  }, [])
+
   return (
     <section
       aria-labelledby="social-proof-heading"
@@ -152,12 +159,33 @@ export function SocialProof() {
 
         {/* Mobile carousel — native scroll-snap, 1 card at a time */}
         <div className="block sm:hidden mb-10">
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-none">
+          <div
+            ref={mobileScrollRef}
+            className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-none"
+          >
             {REVIEWS.map((review) => (
               <div key={review.id} className="snap-center shrink-0 w-full">
                 <ReviewCard {...review} />
               </div>
             ))}
+          </div>
+
+          {/* Prev/next buttons — supplement swiping, don't replace it */}
+          <div className="flex items-center justify-center gap-4 mt-4">
+            <button
+              onClick={() => scrollMobile(-1)}
+              className="w-12 h-12 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-primary hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              aria-label="Предишен отзив"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              onClick={() => scrollMobile(1)}
+              className="w-12 h-12 rounded-full bg-white border border-border shadow-sm flex items-center justify-center text-primary hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              aria-label="Следващ отзив"
+            >
+              <ChevronRight size={22} />
+            </button>
           </div>
         </div>
 
