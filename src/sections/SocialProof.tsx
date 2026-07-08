@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useLayoutEffect } from 'react'
 import { Star, ChevronLeft, ChevronRight, ExternalLink, MapPin } from 'lucide-react'
 import { SOCIAL_PROOF } from '@/lib/content'
 
@@ -45,6 +45,20 @@ function makeInitialSlots(): Slot[] {
     absoluteIndex: i - BUFFER,
     instant: false,
   }))
+}
+
+// Mobile uses the same "never jump back" idea, adapted for native scroll:
+// a plain (non-recycled, ever-growing) array of cards is extended on demand
+// in whichever direction you're moving. Appending ahead never disturbs
+// already-rendered cards' positions, so no compensation is needed. Prepending
+// behind does shift them, so the resulting scrollLeft shift is compensated
+// for synchronously (useLayoutEffect) before the browser paints.
+const MOBILE_BUFFER = 2
+
+type MobileCard = { key: string; reviewIndex: number }
+
+function makeInitialMobileCards(): MobileCard[] {
+  return REVIEWS.map((_, i) => ({ key: `m-${i}`, reviewIndex: i }))
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -128,31 +142,115 @@ export function SocialProof() {
   const cardWidthPercent = 100 / VISIBLE
 
   const mobileScrollRef = useRef<HTMLDivElement>(null)
-  const scrollMobile = useCallback((dir: 1 | -1) => {
+  const [mobileCards, setMobileCardsState] = useState<MobileCard[]>(makeInitialMobileCards)
+  const mobileCardsRef = useRef(mobileCards)
+  const mobileLoRef = useRef(0) // lowest reviewIndex currently represented
+  const mobileHiRef = useRef(N - 1) // highest reviewIndex currently represented
+  const mobilePrependRef = useRef(0) // cards prepended since the last layout-effect flush
+  const mobileStepRef = useRef(0) // px distance between adjacent cards, measured just before a prepend
+  const scrollRafPending = useRef(false)
+
+  const setMobileCards = useCallback((cards: MobileCard[]) => {
+    mobileCardsRef.current = cards
+    setMobileCardsState(cards)
+  }, [])
+
+  // Runs synchronously after mobileCards commits to the DOM but before the
+  // browser paints, so a prepend's shift is corrected in the same frame -
+  // invisible, exactly like the desktop slot recycling is.
+  useLayoutEffect(() => {
     const el = mobileScrollRef.current
-    if (!el) return
-    // Scroll by the live visual distance to the target card's left edge,
-    // measured from actual current bounding boxes rather than offsetLeft -
-    // offsetLeft was consistently off by exactly the card gap here (likely
-    // an interaction between flex `gap` and `scroll-snap-align: center`),
-    // which undershot the next snap point and left a sliver of the
-    // previous card visible instead of showing the next one fully.
+    if (el && mobilePrependRef.current > 0) {
+      el.scrollLeft += mobilePrependRef.current * mobileStepRef.current
+      mobilePrependRef.current = 0
+    }
+  }, [mobileCards])
+
+  const findCurrentMobileIndex = useCallback((el: HTMLDivElement) => {
     const containerRect = el.getBoundingClientRect()
     const cards = Array.from(el.children) as HTMLElement[]
     const containerCenter = containerRect.left + containerRect.width / 2
-    const currentIndex = cards.reduce((closest, card, i) => {
-      const center = (r: HTMLElement) => {
-        const rect = r.getBoundingClientRect()
-        return rect.left + rect.width / 2
-      }
-      return Math.abs(center(card) - containerCenter) < Math.abs(center(cards[closest]) - containerCenter)
-        ? i
-        : closest
-    }, 0)
-    const targetIndex = Math.min(Math.max(currentIndex + dir, 0), cards.length - 1)
-    const delta = cards[targetIndex].getBoundingClientRect().left - containerRect.left
-    el.scrollBy({ left: delta, behavior: 'smooth' })
+    const center = (r: HTMLElement) => {
+      const rect = r.getBoundingClientRect()
+      return rect.left + rect.width / 2
+    }
+    return cards.reduce(
+      (closest, card, i) =>
+        Math.abs(center(card) - containerCenter) < Math.abs(center(cards[closest]) - containerCenter)
+          ? i
+          : closest,
+      0,
+    )
   }, [])
+
+  // Grows mobileCards so there are always at least MOBILE_BUFFER cards
+  // beyond currentIndex on both sides, and returns the (possibly shifted,
+  // if anything was prepended) index of the same logical card. Reads/writes
+  // mobileCardsRef directly (rather than a setState updater) so the ref
+  // mutations below can't run twice from React 18 Strict Mode's dev-only
+  // double-invocation of updater functions.
+  const ensureMobileBuffer = useCallback((currentIndex: number) => {
+    const el = mobileScrollRef.current
+    let cards = mobileCardsRef.current
+    let adjustedIndex = currentIndex
+
+    while (adjustedIndex + MOBILE_BUFFER >= cards.length) {
+      mobileHiRef.current += 1
+      cards = [...cards, { key: `m-${mobileHiRef.current}`, reviewIndex: mobileHiRef.current }]
+    }
+
+    let prependCount = 0
+    while (adjustedIndex - MOBILE_BUFFER < 0) {
+      if (prependCount === 0 && el && cards.length >= 2) {
+        const a = (el.children[0] as HTMLElement).getBoundingClientRect()
+        const b = (el.children[1] as HTMLElement).getBoundingClientRect()
+        mobileStepRef.current = b.left - a.left
+      }
+      mobileLoRef.current -= 1
+      cards = [{ key: `m-${mobileLoRef.current}`, reviewIndex: mobileLoRef.current }, ...cards]
+      adjustedIndex += 1
+      prependCount += 1
+    }
+    if (prependCount > 0) mobilePrependRef.current += prependCount
+
+    if (cards !== mobileCardsRef.current) setMobileCards(cards)
+    return adjustedIndex
+  }, [setMobileCards])
+
+  const scrollMobile = useCallback((dir: 1 | -1) => {
+    const el = mobileScrollRef.current
+    if (!el) return
+    const currentIndex = findCurrentMobileIndex(el)
+    const targetIndex = ensureMobileBuffer(currentIndex) + dir
+
+    // If cards were just added, they won't exist in the DOM until after
+    // this render commits - defer the actual scroll to the next frame,
+    // after the layout effect above has already compensated for any
+    // prepend, so the delta below reflects reality either way.
+    requestAnimationFrame(() => {
+      const elNow = mobileScrollRef.current
+      if (!elNow) return
+      const cards = Array.from(elNow.children) as HTMLElement[]
+      const target = cards[targetIndex]
+      if (!target) return
+      const containerRect = elNow.getBoundingClientRect()
+      const delta = target.getBoundingClientRect().left - containerRect.left
+      elNow.scrollBy({ left: delta, behavior: 'smooth' })
+    })
+  }, [findCurrentMobileIndex, ensureMobileBuffer])
+
+  // Keeps the buffer topped up while swiping too, not just on button
+  // clicks, so a fast/continued swipe never runs out of cards to reveal.
+  const handleMobileScroll = useCallback(() => {
+    if (scrollRafPending.current) return
+    scrollRafPending.current = true
+    requestAnimationFrame(() => {
+      scrollRafPending.current = false
+      const el = mobileScrollRef.current
+      if (!el) return
+      ensureMobileBuffer(findCurrentMobileIndex(el))
+    })
+  }, [findCurrentMobileIndex, ensureMobileBuffer])
 
   return (
     <section
@@ -181,11 +279,12 @@ export function SocialProof() {
         <div className="block sm:hidden mb-10">
           <div
             ref={mobileScrollRef}
+            onScroll={handleMobileScroll}
             className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-none"
           >
-            {REVIEWS.map((review) => (
-              <div key={review.id} className="snap-center shrink-0 w-full">
-                <ReviewCard {...review} />
+            {mobileCards.map((card) => (
+              <div key={card.key} className="snap-center shrink-0 w-full">
+                <ReviewCard {...REVIEWS[mod(card.reviewIndex, N)]} />
               </div>
             ))}
           </div>
